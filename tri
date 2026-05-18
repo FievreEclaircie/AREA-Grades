@@ -68,6 +68,10 @@
 <header>
   <div class="logo">THOT <span>// TRI ET ORGANISATION</span></div>
   <button class="theme-btn" id="themeBtn">&#9790;</button>
+  <nav class="nav-links">
+      <a href="index.html" class="nav-link">Extraction de grade</a>
+      <a href="tri.html" class="nav-link active">Réorganisation</a>
+   </nav>
 </header>
 
 <div class="container">
