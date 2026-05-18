@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THOT — Renommage OTAN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap');
+  :root[data-theme="dark"]{--bg:#0a0c10;--surface:#0f1318;--surface2:#161b22;--border:#21262d;--border-active:#30363d;--accent:#58a6ff;--accent2:#3fb950;--warn:#d29922;--danger:#f85149;--text:#e6edf3;--text-muted:#7d8590;--text-dim:#484f58;}
+  :root[data-theme="light"]{--bg:#f6f8fa;--surface:#ffffff;--surface2:#f0f2f5;--border:#d0d7de;--border-active:#b0b7be;--accent:#0969da;--accent2:#1a7f37;--warn:#9a6700;--danger:#cf222e;--text:#1f2328;--text-muted:#656d76;--text-dim:#adb5bd;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:"Barlow",sans-serif;font-size:14px;min-height:100vh;transition:background .2s,color .2s;}
+  .app{display:grid;grid-template-rows:56px 1fr;grid-template-columns:300px 1fr;height:100vh;}
+  header{grid-column:1/-1;display:flex;align-items:center;gap:16px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--border);}
+  .logo{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;}
+  .logo span{color:var(--text-muted);font-weight:300;font-size:13px;letter-spacing:2px;margin-left:8px;}
+  .hstats{margin-left:auto;display:flex;gap:24px;align-items:center;}
+  .stat{font-family:"Share Tech Mono",monospace;font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;}
+  .stat strong{color:var(--accent);font-size:15px;}
+  .theme-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:16px;color:var(--text-muted);transition:all .2s;}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .nav-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s;text-transform:uppercase;}
+  .nav-btn:hover{border-color:var(--accent2);color:var(--accent2);}
+  aside{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+  .sec{padding:16px;border-bottom:1px solid var(--border);}
+  .sec h3{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;}
+  label{display:block;font-size:11px;color:var(--text-muted);margin-bottom:4px;font-family:"Share Tech Mono",monospace;}
+  input[type=url],input[type=text]{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:8px 10px;color:var(--text);font-family:"Share Tech Mono",monospace;font-size:12px;outline:none;transition:border-color .2s;margin-bottom:8px;}
+  input:focus{border-color:var(--accent);}
+  .hint{font-size:10px;color:var(--text-dim);font-family:"Share Tech Mono",monospace;margin-top:-4px;margin-bottom:8px;line-height:1.5;}
+  .btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 14px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:all .15s;width:100%;margin-bottom:6px;text-transform:uppercase;}
+  .btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.05);}
+  .btn:disabled{opacity:.3;cursor:not-allowed;}
+  .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;}
+  .btn-primary:hover:not(:disabled){opacity:.85;color:#fff;}
+  .btn-success{background:var(--accent2);color:#fff;border-color:var(--accent2);font-weight:700;}
+  .btn-success:hover:not(:disabled){opacity:.85;color:#fff;}
+  .btn-warn{background:var(--warn);color:#fff;border-color:var(--warn);font-weight:700;}
+  .btn-warn:hover:not(:disabled){opacity:.85;color:#fff;}
+  .toggle-group{display:flex;gap:4px;margin-bottom:8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px;}
+  .toggle-btn{flex:1;padding:5px 6px;border-radius:4px;border:none;background:transparent;color:var(--text-muted);font-family:"Barlow Condensed",sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s;letter-spacing:.5px;}
+  .toggle-btn.active{background:var(--accent);color:#fff;}
+  .toggle-btn.active.warn{background:var(--warn);}
+  .toggle-btn:hover:not(.active){color:var(--text);background:var(--surface2);}
+  .wstatus{display:flex;align-items:center;gap:8px;font-family:"Share Tech Mono",monospace;font-size:10px;margin-bottom:10px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);flex-shrink:0;}
+  .dot.ok{background:var(--accent2);}.dot.loading{background:var(--warn);animation:pulse 1s infinite;}.dot.error{background:var(--danger);}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .spin{display:inline-block;width:10px;height:10px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;}
+  .main{display:flex;flex-direction:column;overflow:hidden;}
+  .toolbar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;}
+  .tabs{display:flex;gap:2px;}
+  .tab{padding:4px 12px;border-radius:3px;font-family:"Share Tech Mono",monospace;font-size:11px;cursor:pointer;color:var(--text-muted);border:1px solid transparent;transition:all .15s;}
+  .tab.active{background:var(--surface2);color:var(--text);border-color:var(--border);}
+  .tab:hover:not(.active){color:var(--text);}
+  .srch{margin-left:auto;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:5px 10px;color:var(--text);font-family:"Share Tech Mono",monospace;font-size:11px;outline:none;width:180px;}
+  .srch:focus{border-color:var(--accent);}
+  .prog{padding:10px 16px;border-bottom:1px solid var(--border);display:none;flex-shrink:0;}
+  .prog-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:5px;}
+  .prog-fill{height:100%;background:var(--accent);width:0%;transition:width .3s;border-radius:2px;}
+  .prog-fill.indeterminate{width:30%!important;animation:indeterminate 1.5s infinite;}
+  @keyframes indeterminate{0%{margin-left:-30%}100%{margin-left:100%}}
+  .prog-lbl{font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-muted);display:flex;justify-content:space-between;}
+  .tw{flex:1;overflow-y:auto;}
+  table{width:100%;border-collapse:collapse;table-layout:fixed;}
+  thead th{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--border);padding:9px 12px;text-align:left;font-family:"Barlow Condensed",sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);z-index:5;}
+  th:nth-child(1){width:44px;}th:nth-child(2){width:22%;}th:nth-child(3){width:100px;}th:nth-child(4){width:90px;}th:nth-child(5){width:28%;}th:nth-child(6){width:auto;}
+  tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
+  tbody tr:hover{background:var(--surface);}
+  tbody tr.needs-validation{background:rgba(210,153,34,.05);}
+  td{padding:7px 12px;vertical-align:middle;font-size:12px;}
+  .tc{padding:5px 8px;}
+  .fn{font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-muted);word-break:break-all;line-height:1.4;}
+  .badges{display:flex;flex-wrap:wrap;gap:3px;}
+  .badge{font-family:"Share Tech Mono",monospace;font-size:10px;padding:2px 5px;border-radius:3px;font-weight:600;}
+  .bc{background:rgba(63,185,80,.15);color:var(--accent2);border:1px solid rgba(63,185,80,.3);}
+  .bb{background:rgba(88,166,255,.15);color:var(--accent);border:1px solid rgba(88,166,255,.3);}
+  .br{background:rgba(210,153,34,.15);color:var(--warn);border:1px solid rgba(210,153,34,.3);}
+  .bv{background:rgba(248,81,73,.15);color:var(--danger);border:1px solid rgba(248,81,73,.3);}
+  .nn{font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--accent2);word-break:break-all;line-height:1.4;}
+  .rank-edit{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:2px 5px;color:var(--text);font-family:"Share Tech Mono",monospace;font-size:10px;width:60px;outline:none;}
+  .rank-edit:focus{border-color:var(--accent);}
+  .validate-notice{padding:8px 16px;background:rgba(210,153,34,.1);border-bottom:1px solid rgba(210,153,34,.3);font-family:"Share Tech Mono",monospace;font-size:11px;color:var(--warn);display:none;flex-shrink:0;gap:10px;align-items:center;}
+  .validate-notice button{background:var(--warn);color:#fff;border:none;border-radius:3px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:"Barlow Condensed",sans-serif;font-weight:600;}
+  .log{padding:6px 14px;border-top:1px solid var(--border);background:var(--surface);max-height:70px;overflow-y:auto;font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-dim);flex-shrink:0;}
+  .ll{line-height:1.6;}.ll.ok{color:var(--accent2);}.ll.err{color:var(--danger);}.ll.warn{color:var(--warn);}.ll.info{color:var(--accent);}
+  .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;color:var(--text-dim);font-family:"Share Tech Mono",monospace;font-size:12px;gap:10px;}
+  .eico{font-size:38px;opacity:.25;}
+  ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="logo">THOT <span>// OTAN IMAGE RENAMER</span></div>
+  <div class="hstats">
+    <div class="stat">TROUVES <strong id="hT">0</strong></div>
+    <div class="stat">TELECHARGES <strong id="hD">0</strong></div>
+    <div class="stat">ERREURS <strong id="hE">0</strong></div>
+    <a class="nav-btn" href="https://fievreeclaircie.github.io/rename/thot-sorter.html" title="Outil de tri et organisation des fichiers">&#128230; Trier les fichiers</a>
+    <button class="theme-btn" id="themeBtn" title="Mode jour/nuit">&#9790;</button>
+  </div>
+</header>
+<aside>
+  <div class="sec">
+    <h3>Worker Cloudflare</h3>
+    <label>URL du Worker</label>
+    <input type="url" id="workerUrl" value="https://massive-rename.fievre-eclaircie.workers.dev">
+  </div>
+  <div class="sec">
+    <h3>Source Wikipedia</h3>
+    <div class="wstatus"><div class="dot" id="wDot"></div><span id="wSt">Non chargee</span></div>
+    <label>URL page grades</label>
+    <input type="url" id="wikiUrl" placeholder="https://en.wikipedia.org/wiki/...">
+    <p class="hint">OTAN ou non-OTAN avec insignes. Supporte les fragments #Section</p>
+    <label>Mode</label>
+    <div class="toggle-group">
+      <div class="toggle-btn active" id="modeNato" data-mode="nato">OTAN</div>
+      <div class="toggle-btn" id="modeNonNato" data-mode="non-nato">NON-OTAN</div>
+    </div>
+    <label>Branche</label>
+    <div class="toggle-group">
+      <div class="toggle-btn active" id="bAIR" data-branch="AIR">AIR</div>
+      <div class="toggle-btn" id="bTERRE" data-branch="TERRE">TERRE</div>
+      <div class="toggle-btn" id="bMER" data-branch="MER">MER</div>
+    </div>
+    <button class="btn btn-primary" id="scrapeBtn" style="margin-top:8px;">&#8595; Analyser Wikipedia</button>
+    <button class="btn btn-success" id="dlBtn" disabled>&#9654; Telecharger et ZIP</button>
+  </div>
+  <div class="sec" style="flex:1;display:flex;flex-direction:column;gap:6px;">
+    <h3>Session</h3>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);" id="sessionInfo"></div>
+    <button class="btn" id="restoreBtn" disabled style="margin-top:4px;">&#8635; Restaurer session</button>
+    <button class="btn" id="clearBtn" disabled>&#128465; Effacer</button>
+    <div style="margin-top:4px;font-family:'Share Tech Mono',monospace;font-size:11px;min-height:16px;" id="actSt"></div>
+  </div>
+</aside>
+<main class="main">
+  <div class="toolbar">
+    <div class="tabs">
+      <div class="tab active" data-f="all">Tous</div>
+      <div class="tab" data-f="pending">A valider</div>
+      <div class="tab" data-f="ok">OK</div>
+      <div class="tab" data-f="err">Erreurs</div>
+    </div>
+    <input class="srch" type="text" id="srch" placeholder="Filtrer...">
+  </div>
+  <div class="validate-notice" id="validateNotice">
+    &#9888; Grades non-OTAN — verifie les codes OF/OR avant telechargement
+    <button id="validateAllBtn">Tout valider</button>
+  </div>
+  <div class="prog" id="prog">
+    <div class="prog-track"><div class="prog-fill" id="pFill"></div></div>
+    <div class="prog-lbl"><span id="pTxt">En cours...</span><span id="pPct">0%</span></div>
+  </div>
+  <div class="tw">
+    <div class="empty" id="emptyEl">
+      <div class="eico">&#127894;</div>
+      <div>Selectionne le mode, la branche, colle une URL et clique Analyser</div>
+    </div>
+    <table id="tbl" style="display:none">
+      <thead><tr><th>Etat</th><th>Source</th><th>Pays/Branche</th><th>Grade OTAN</th><th>Fichier</th><th>Nom local</th></tr></thead>
+      <tbody id="tbdy"></tbody>
+    </table>
+  </div>
+  <div class="log" id="logEl"></div>
+</main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+var STORAGE_KEY = "thot_session_v2";
+var state = {entries: [], filter: "all", search: ""};
+var selectedBranch = "AIR";
+var selectedMode   = "nato";
+var currentTheme   = "dark";
+
+function gi(id) { return document.getElementById(id); }
+var workerUrlEl    = gi("workerUrl");
+var wikiUrlEl      = gi("wikiUrl");
+var wDot           = gi("wDot");
+var wSt            = gi("wSt");
+var scrapeBtn      = gi("scrapeBtn");
+var dlBtn          = gi("dlBtn");
+var clearBtn       = gi("clearBtn");
+var restoreBtn     = gi("restoreBtn");
+var tbdy           = gi("tbdy");
+var tbl            = gi("tbl");
+var emptyEl        = gi("emptyEl");
+var prog           = gi("prog");
+var pFill          = gi("pFill");
+var pTxt           = gi("pTxt");
+var pPct           = gi("pPct");
+var logEl          = gi("logEl");
+var actSt          = gi("actSt");
+var validateNotice = gi("validateNotice");
+var sessionInfo    = gi("sessionInfo");
+
+function log(msg, t) {
+  t = t || "";
+  var d = document.createElement("div");
+  d.className = "ll " + t;
+  d.textContent = "[" + new Date().toLocaleTimeString("fr-FR") + "] " + msg;
+  logEl.appendChild(d);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function stats() {
+  gi("hT").textContent = state.entries.length;
+  gi("hD").textContent = state.entries.filter(function(e){ return e.status === "ok"; }).length;
+  gi("hE").textContent = state.entries.filter(function(e){ return e.status === "err"; }).length;
+  clearBtn.disabled = state.entries.length === 0;
+  dlBtn.disabled = state.entries.length === 0;
+  // Afficher notice validation si mode non-otan et grades non valides
+  var needsValidation = state.entries.some(function(e){ return !e.validated; });
+  validateNotice.style.display = (selectedMode === "non-nato" && needsValidation) ? "flex" : "none";
+}
+
+function updateFileName(entry) {
+  var latinName = entry.gradeName || "Unknown";
+  var fileLatinName = latinName
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[đĐ]/g,"d").replace(/[łŁ]/g,"l")
+    .replace(/[øØ]/g,"o").replace(/[þÞ]/g,"th").replace(/[ß]/g,"ss")
+    .replace(/\s+/g,"-").replace(/[^a-zA-Z0-9-]/g,"")
+    .replace(/-+/g,"-").replace(/^-|-$/g,"");
+  entry.fileName = entry.country + "_" + entry.branch + "_" + entry.rank + "_" + fileLatinName + (entry.ext || ".svg");
+}
+
+function render() {
+  if (!state.entries.length) {
+    tbl.style.display = "none";
+    emptyEl.style.display = "flex";
+    return;
+  }
+  tbl.style.display = "table";
+  emptyEl.style.display = "none";
+  var s = state.search.toLowerCase();
+  var rows = state.entries.filter(function(e) {
+    if (state.filter === "ok"      && e.status !== "ok")  return false;
+    if (state.filter === "err"     && e.status !== "err") return false;
+    if (state.filter === "pending" && e.validated)        return false;
+    if (s && e.fileName.toLowerCase().indexOf(s) === -1 &&
+        e.gradeName.toLowerCase().indexOf(s) === -1 &&
+        (e.country || "").toLowerCase().indexOf(s) === -1) return false;
+    return true;
+  });
+  tbdy.innerHTML = "";
+  rows.forEach(function(e, rowIdx) {
+    var tr = document.createElement("tr");
+    if (!e.validated) tr.classList.add("needs-validation");
+
+    // Etat
+    var t1 = document.createElement("td"); t1.className = "tc";
+    if (e.status === "ok")
+      t1.innerHTML = "<span style='color:var(--accent2);font-size:16px'>&#10003;</span>";
+    else if (e.status === "err")
+      t1.innerHTML = "<span title='" + (e.error || "") + "' style='color:var(--danger);font-size:16px;cursor:help'>&#10007;</span>";
+    else if (e.status === "loading")
+      t1.innerHTML = "<span class='spin'></span>";
+    else if (!e.validated)
+      t1.innerHTML = "<span style='color:var(--warn);font-size:14px' title='A valider'>&#9888;</span>";
+    else
+      t1.innerHTML = "<span style='color:var(--text-dim)'>&#8212;</span>";
+
+    // Source
+    var t2 = document.createElement("td");
+    var src = (e.imgUrl || "").split("/").pop().replace(/%20/g," ").slice(0,40);
+    t2.innerHTML = "<div class='fn'>" + src + "</div>";
+
+    // Pays/Branche
+    var t3 = document.createElement("td");
+    t3.innerHTML = "<div class='badges'>" +
+      (e.country ? "<span class='badge bc'>" + e.country + "</span> " : "") +
+      (e.branch  ? "<span class='badge bb'>" + e.branch  + "</span>" : "") +
+      "</div>";
+
+    // Grade OTAN — editable si non valide
+    var t4 = document.createElement("td");
+    var entryIdx = state.entries.indexOf(e);
+    if (!e.validated) {
+      t4.innerHTML = "<input type='text' class='rank-edit' data-idx='" + entryIdx + "' value='" + (e.rank || "") + "' title='Modifier le code OTAN puis Entree'>";
+    } else {
+      t4.innerHTML = "<span class='badge br'>" + (e.rank || "?") + "</span>";
+    }
+
+    // Fichier
+    var t5 = document.createElement("td");
+    t5.innerHTML = "<div class='nn'>" + e.fileName + "</div>";
+
+    // Nom local
+    var t6 = document.createElement("td");
+    t6.innerHTML = "<div class='fn' style='color:var(--text)'>" + (e.gradeName || "") + "</div>";
+
+    tr.appendChild(t1); tr.appendChild(t2); tr.appendChild(t3);
+    tr.appendChild(t4); tr.appendChild(t5); tr.appendChild(t6);
+    tbdy.appendChild(tr);
+  });
+
+  // Listeners sur les inputs de grade
+  tbdy.querySelectorAll(".rank-edit").forEach(function(input) {
+    input.addEventListener("keydown", function(ev) {
+      if (ev.key === "Enter") {
+        var idx = parseInt(input.dataset.idx);
+        var newRank = input.value.trim().toUpperCase();
+        if (/^(OF|OR)\d+$|^OFD$/.test(newRank)) {
+          state.entries[idx].rank = newRank;
+          state.entries[idx].validated = true;
+          updateFileName(state.entries[idx]);
+          saveSession();
+          render(); stats();
+          log("Grade modifie: " + newRank + " pour " + state.entries[idx].gradeName, "ok");
+        } else {
+          input.style.borderColor = "var(--danger)";
+        }
+      }
+    });
+  });
+}
+
+// ── MODE toggle ──────────────────────────────────────────────────────────────
+document.querySelectorAll("[data-mode]").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll("[data-mode]").forEach(function(b){ b.classList.remove("active","warn"); });
+    btn.classList.add("active");
+    if (btn.dataset.mode === "non-nato") btn.classList.add("warn");
+    selectedMode = btn.dataset.mode;
+    log("Mode: " + selectedMode.toUpperCase(), "info");
+  });
+});
+
+// ── BRANCHE toggle ───────────────────────────────────────────────────────────
+document.querySelectorAll("[data-branch]").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll("[data-branch]").forEach(function(b){ b.classList.remove("active"); });
+    btn.classList.add("active");
+    selectedBranch = btn.dataset.branch;
+    log("Branche: " + selectedBranch, "info");
+  });
+});
+
+// ── THEME ────────────────────────────────────────────────────────────────────
+gi("themeBtn").addEventListener("click", function() {
+  currentTheme = currentTheme === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  gi("themeBtn").innerHTML = currentTheme === "dark" ? "&#9790;" : "&#9788;";
+  try { localStorage.setItem("thot_theme", currentTheme); } catch(e) {}
+});
+
+// ── VALIDATE ALL ─────────────────────────────────────────────────────────────
+gi("validateAllBtn").addEventListener("click", function() {
+  state.entries.forEach(function(e) { e.validated = true; });
+  saveSession();
+  render(); stats();
+  log("Tous les grades valides", "ok");
+});
+
+// ── SCRAPE ───────────────────────────────────────────────────────────────────
+scrapeBtn.addEventListener("click", function() {
+  var wikiUrl   = wikiUrlEl.value.trim();
+  var workerUrl = workerUrlEl.value.trim();
+  if (!wikiUrl)   { log("URL Wikipedia manquante", "err"); return; }
+  if (!workerUrl) { log("URL Worker manquante",    "err"); return; }
+
+  wDot.className = "dot loading";
+  wSt.textContent = "Analyse...";
+  scrapeBtn.disabled = true;
+  dlBtn.disabled = true;
+
+  // Point 12 : indicateur indeterminate pendant l'analyse
+  prog.style.display = "block";
+  pFill.className = "prog-fill indeterminate";
+  pTxt.textContent = selectedMode === "non-nato" ? "Analyse + Claude en cours..." : "Analyse Wikipedia...";
+  pPct.textContent = "";
+
+  log("Analyse [" + selectedMode.toUpperCase() + "] branche: " + selectedBranch, "info");
+  if (selectedMode === "non-nato") {
+    log("Mode NON-OTAN: Claude assigne les equivalents OF/OR — peut prendre 10-30s...", "warn");
+  }
+
+  fetch(workerUrl + "/scrape-wiki", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({wikiUrl: wikiUrl, branch: selectedBranch, mode: selectedMode})
+  })
+  .then(function(resp) {
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    return resp.json();
+  })
+  .then(function(data) {
+    if (data.error) throw new Error(data.error);
+    log(data.count + " images trouvees [" + (data.mode || selectedMode).toUpperCase() + "] " + data.branch, "ok");
+    wDot.className = "dot ok";
+    wSt.textContent = data.count + " images";
+
+    state.entries = data.entries.map(function(e) {
+      return {
+        country: e.country, branch: e.branch, rank: e.rank,
+        gradeName: e.gradeName, fileName: e.fileName, imgUrl: e.imgUrl,
+        ext: e.ext || ".svg", validated: !!e.validated,
+        status: "pending", error: null
+      };
+    });
+
+    if (selectedMode === "non-nato") {
+      var unvalidated = state.entries.filter(function(e){ return !e.validated; }).length;
+      if (unvalidated > 0) {
+        log(unvalidated + " grades a valider avant telechargement", "warn");
+      }
+    }
+
+    saveSession();
+    render(); stats();
+    dlBtn.disabled = false;
+  })
+  .catch(function(e) {
+    wDot.className = "dot error";
+    wSt.textContent = "Erreur";
+    log("Erreur: " + e.message, "err");
+  })
+  .finally(function() {
+    scrapeBtn.disabled = false;
+    prog.style.display = "none";
+    pFill.className = "prog-fill";
+  });
+});
+
+// ── DOWNLOAD + ZIP ───────────────────────────────────────────────────────────
+dlBtn.addEventListener("click", function() {
+  var workerUrl = workerUrlEl.value.trim();
+  // En mode non-OTAN, verifier qu'il y a des grades valides
+  if (selectedMode === "non-nato") {
+    var unvalidated = state.entries.filter(function(e){ return !e.validated; }).length;
+    if (unvalidated > 0) {
+      var proceed = confirm(unvalidated + " grades n'ont pas ete valides.\nContinuer quand meme avec les codes OF/OR assignes par Claude ?");
+      if (!proceed) return;
+      state.entries.forEach(function(e){ e.validated = true; });
+    }
+  }
+  dlBtn.disabled = true;
+  downloadAndZip(workerUrl);
+});
+
+function downloadAndZip(workerUrl) {
+  var total = state.entries.length;
+  var done = 0, errs = 0;
+  prog.style.display = "block";
+  pFill.className = "prog-fill";
+  pFill.style.width = "0%";
+  pPct.textContent = "0%";
+  log("Telechargement de " + total + " images...", "info");
+  var zip = new JSZip();
+  var BATCH = 2;
+  var i = 0;
+
+  function nextBatch() {
+    if (i >= total) {
+      pFill.style.width = "100%";
+      pPct.textContent = "100%";
+      pTxt.textContent = "Generation ZIP...";
+      log("Termine: " + done + " succes, " + errs + " erreurs. Generation ZIP...", done > 0 ? "ok" : "err");
+      zip.generateAsync(
+        {type: "blob", compression: "DEFLATE", compressionOptions: {level: 3}},
+        function(m) {
+          pTxt.textContent = "ZIP " + m.percent.toFixed(0) + "%";
+          pPct.textContent = m.percent.toFixed(0) + "%";
+        }
+      ).then(function(content) {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(content);
+        a.download = "THOT_" + selectedBranch + "_" + (selectedMode === "non-nato" ? "NONATO_" : "") + new Date().toISOString().slice(0,10) + ".zip";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        prog.style.display = "none";
+        actSt.innerHTML = "<span style='color:var(--accent2)'>OK — " + done + " fichiers ZIP telecharge</span>";
+        log("ZIP telecharge: " + done + " fichiers", "ok");
+        dlBtn.disabled = false;
+        clearSession();
+        stats();
+      }).catch(function(err) {
+        log("Erreur ZIP: " + err.message, "err");
+        prog.style.display = "none";
+        dlBtn.disabled = false;
+      });
+      return Promise.resolve();
+    }
+    var batch = state.entries.slice(i, i + BATCH);
+    i += BATCH;
+    return Promise.all(batch.map(function(e) {
+      e.status = "loading"; render();
+      var proxyUrl = workerUrl + "/proxy-image?url=" + encodeURIComponent(e.imgUrl);
+      return fetch(proxyUrl)
+        .then(function(r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.arrayBuffer();
+        })
+        .then(function(buf) {
+          zip.file(e.fileName, buf);
+          buf = null;
+          e.status = "ok"; done++;
+          log("OK " + e.fileName, "ok");
+        })
+        .catch(function(err) {
+          e.status = "err"; e.error = err.message; errs++;
+          log("ERR " + e.fileName + ": " + err.message, "err");
+        })
+        .then(function() {
+          var pct = Math.round(((done + errs) / total) * 100);
+          pFill.style.width = pct + "%";
+          pPct.textContent  = pct + "%";
+          pTxt.textContent  = (done + errs) + " / " + total;
+          render(); stats();
+        });
+    })).then(function() {
+      return new Promise(function(r){ setTimeout(r, 100); });
+    }).then(nextBatch);
+  }
+  return nextBatch();
+}
+
+// ── SESSION (point 10) ───────────────────────────────────────────────────────
+function saveSession() {
+  try {
+    var sessionData = {
+      entries: state.entries.map(function(e) {
+        return {
+          country: e.country, branch: e.branch, rank: e.rank,
+          gradeName: e.gradeName, fileName: e.fileName,
+          imgUrl: e.imgUrl, ext: e.ext, validated: e.validated
+        };
+      }),
+      mode: selectedMode, branch: selectedBranch,
+      wikiUrl: wikiUrlEl.value,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessionData));
+    updateSessionInfo(sessionData);
+  } catch(e) { /* localStorage peut etre indisponible */ }
+}
+
+function loadSession() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(e) { return null; }
+}
+
+function clearSession() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  sessionInfo.textContent = "";
+  restoreBtn.disabled = true;
+}
+
+function updateSessionInfo(data) {
+  if (!data) { sessionInfo.textContent = ""; restoreBtn.disabled = true; return; }
+  var date = new Date(data.savedAt);
+  sessionInfo.textContent = data.entries.length + " images — " + date.toLocaleDateString("fr-FR") + " " + date.toLocaleTimeString("fr-FR", {hour:"2-digit",minute:"2-digit"});
+  restoreBtn.disabled = false;
+}
+
+restoreBtn.addEventListener("click", function() {
+  var data = loadSession();
+  if (!data) { log("Pas de session sauvegardee", "warn"); return; }
+  state.entries = data.entries.map(function(e) {
+    return { country: e.country, branch: e.branch, rank: e.rank,
+      gradeName: e.gradeName, fileName: e.fileName, imgUrl: e.imgUrl,
+      ext: e.ext || ".svg", validated: !!e.validated,
+      status: "pending", error: null };
+  });
+  selectedMode   = data.mode   || "nato";
+  selectedBranch = data.branch || "AIR";
+  if (data.wikiUrl) wikiUrlEl.value = data.wikiUrl;
+  // Sync toggles
+  document.querySelectorAll("[data-mode]").forEach(function(b){
+    b.classList.toggle("active", b.dataset.mode === selectedMode);
+    if (b.dataset.mode === "non-nato" && selectedMode === "non-nato") b.classList.add("warn");
+  });
+  document.querySelectorAll("[data-branch]").forEach(function(b){
+    b.classList.toggle("active", b.dataset.branch === selectedBranch);
+  });
+  log("Session restauree: " + state.entries.length + " images", "ok");
+  render(); stats();
+  dlBtn.disabled = state.entries.length === 0;
+});
+
+// ── FILTRES ──────────────────────────────────────────────────────────────────
+document.querySelectorAll(".tab").forEach(function(t) {
+  t.addEventListener("click", function() {
+    document.querySelectorAll(".tab").forEach(function(x){ x.classList.remove("active"); });
+    t.classList.add("active");
+    state.filter = t.dataset.f;
+    render();
+  });
+});
+
+gi("srch").addEventListener("input", function(e) {
+  state.search = e.target.value;
+  render();
+});
+
+clearBtn.addEventListener("click", function() {
+  state.entries = [];
+  wDot.className = "dot";
+  wSt.textContent = "Non chargee";
+  actSt.innerHTML = "";
+  dlBtn.disabled = true;
+  validateNotice.style.display = "none";
+  clearSession();
+  render(); stats();
+  log("Reinitialise", "warn");
+});
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+(function init() {
+  // Restaurer theme
+  try {
+    var savedTheme = localStorage.getItem("thot_theme");
+    if (savedTheme) {
+      currentTheme = savedTheme;
+      document.documentElement.setAttribute("data-theme", currentTheme);
+      gi("themeBtn").innerHTML = currentTheme === "dark" ? "&#9790;" : "&#9788;";
+    }
+  } catch(e) {}
+
+  // Verifier session sauvegardee
+  var session = loadSession();
+  if (session) {
+    updateSessionInfo(session);
+    log("Session precedente disponible (" + session.entries.length + " images) — clique Restaurer", "warn");
+  }
+
+  log("THOT pret. Mode, branche, URL Wikipedia puis Analyser.", "info");
+})();
+</script>
+</body>
+</html>
