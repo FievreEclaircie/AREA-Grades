@@ -61,6 +61,24 @@
   .log .warn{color:var(--warn);}
   .log .info{color:var(--accent);}
   ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:3px;}
+  .nav-links { display: flex; align-items: center; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+
+.nav-link {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.nav-link:hover  { color: var(--accent); background: rgba(200,168,75,0.08); border-color: rgba(200,168,75,0.2); }
+.nav-link.active { color: var(--accent); background: rgba(200,168,75,0.12); border-color: rgba(200,168,75,0.3); font-weight: 500; }
+  
 
   /* Mode sombre pour la zone de dépôt de fichiers */
   input[type=file]{display:none;}
@@ -69,7 +87,7 @@
 <body>
 <header>
   <div class="logo">THOT <span>// TRI ET ORGANISATION</span></div>
-  <a class="nav-btn" href="index.html" title="Retour a l'outil de renommage" style="margin-left:auto;">&#8592; Extraction des grades</a>
+  <a href="nav-link" href="index.html" title="Retour a l'outil de renommage" style="margin-left:auto;">&#8592; Extraction des grades</a>
   <button class="theme-btn" id="themeBtn" style="margin-left:8px;">&#9790;</button>
 </header>
 
