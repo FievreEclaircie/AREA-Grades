@@ -105,20 +105,19 @@
       <div class="branch-btn" id="bMER">MER</div>
     </div>
     <button class="btn btn-primary" id="scrapeBtn">&#8595; Analyser Wikipedia</button>
-    <button class="btn btn-success" id="dlBtn" disabled>&#9654; Lancer le telechargement</button>
+    <button class="btn btn-success" id="dlBtn" disabled>&#9654; Telecharger et ZIP</button>
   </div>
   <div class="sec" style="flex:1;display:flex;flex-direction:column;">
-    <h3>Actions</h3>
-    <button class="btn btn-success" id="zipBtn" disabled>&#128230; Telecharger le ZIP</button>
-    <button class="btn" id="clearBtn" disabled>&#128465; Effacer</button>
-    <div style="margin-top:10px;font-family:var(--mono);font-size:11px;" id="actSt"></div>
+    <h3>Etat</h3>
+    <div style="margin-top:4px;font-family:var(--mono);font-size:11px;" id="actSt"></div>
+    <button class="btn" id="clearBtn" disabled style="margin-top:auto;">&#128465; Effacer</button>
   </div>
 </aside>
 <main class="main">
   <div class="toolbar">
     <div class="tabs">
       <div class="tab active" data-f="all">Tous</div>
-      <div class="tab" data-f="ok">Telecharges</div>
+      <div class="tab" data-f="ok">OK</div>
       <div class="tab" data-f="err">Erreurs</div>
     </div>
     <input class="srch" type="text" id="srch" placeholder="Filtrer...">
@@ -130,7 +129,7 @@
   <div class="tw">
     <div class="empty" id="emptyEl"><div class="eico">&#127894;</div><div>Colle une URL Wikipedia et clique Analyser</div></div>
     <table id="tbl" style="display:none">
-      <thead><tr><th>IMG</th><th>Source</th><th>Pays / Branche</th><th>Grade</th><th>Nouveau nom</th><th>Etat</th></tr></thead>
+      <thead><tr><th>Etat</th><th>Source</th><th>Pays / Branche</th><th>Grade</th><th>Nouveau nom</th><th></th></tr></thead>
       <tbody id="tbdy"></tbody>
     </table>
   </div>
@@ -150,7 +149,6 @@ var wDot        = gi("wDot");
 var wSt         = gi("wSt");
 var scrapeBtn   = gi("scrapeBtn");
 var dlBtn       = gi("dlBtn");
-var zipBtn      = gi("zipBtn");
 var clearBtn    = gi("clearBtn");
 var tbdy        = gi("tbdy");
 var tbl         = gi("tbl");
@@ -175,7 +173,6 @@ function stats() {
   gi("hT").textContent = state.entries.length;
   gi("hD").textContent = state.entries.filter(function(e){ return e.status === "ok"; }).length;
   gi("hE").textContent = state.entries.filter(function(e){ return e.status === "err"; }).length;
-  zipBtn.disabled  = !state.entries.some(function(e){ return e.status === "ok"; });
   clearBtn.disabled = state.entries.length === 0;
 }
 
@@ -199,37 +196,42 @@ function render() {
   tbdy.innerHTML = "";
   rows.forEach(function(e) {
     var tr = document.createElement("tr");
+
+    // Etat
     var t1 = document.createElement("td"); t1.className = "tc";
-    if (e.blobUrl) {
-      var img = document.createElement("img");
-      img.className = "thumb"; img.src = e.blobUrl; t1.appendChild(img);
-    } else if (e.status === "loading") {
-      t1.innerHTML = "<div class=\"tph\"><span class=\"spin\"></span></div>";
-    } else {
-      t1.innerHTML = "<div class=\"tph\">&#127894;</div>";
-    }
+    if (e.status === "ok")
+      t1.innerHTML = "<span style=\"color:var(--accent2);font-size:16px\">&#10003;</span>";
+    else if (e.status === "err")
+      t1.innerHTML = "<span title=\"" + (e.error || "") + "\" style=\"color:var(--danger);font-size:16px;cursor:help\">&#10007;</span>";
+    else if (e.status === "loading")
+      t1.innerHTML = "<span class=\"spin\"></span>";
+    else
+      t1.innerHTML = "<span style=\"color:var(--text-dim)\">&#8212;</span>";
+
+    // Source
     var t2 = document.createElement("td");
     var src = (e.imgUrl || "").split("/").pop().replace(/%20/g, " ").slice(0, 40);
     t2.innerHTML = "<div class=\"fn\">" + src + "</div>";
+
+    // Badges
     var t3 = document.createElement("td");
     var badges = "<div class=\"badges\">";
     if (e.country) badges += "<span class=\"badge bc\">" + e.country + "</span> ";
     if (e.branch)  badges += "<span class=\"badge bb\">" + e.branch  + "</span>";
     badges += "</div>";
     t3.innerHTML = badges;
+
+    // Grade
     var t4 = document.createElement("td");
     t4.innerHTML = "<span class=\"badge br\">" + (e.rank || "?") + "</span><div class=\"fn\" style=\"margin-top:3px;color:var(--text)\">" + (e.gradeName || "") + "</div>";
+
+    // Nouveau nom
     var t5 = document.createElement("td");
     t5.innerHTML = "<div class=\"nn\">" + e.fileName + "</div>";
+
+    // Vide
     var t6 = document.createElement("td");
-    if (e.status === "ok")
-      t6.innerHTML = "<span style=\"color:var(--accent2);font-size:16px\">&#10003;</span>";
-    else if (e.status === "err")
-      t6.innerHTML = "<span title=\"" + (e.error || "") + "\" style=\"color:var(--danger);font-size:16px;cursor:help\">&#10007;</span>";
-    else if (e.status === "loading")
-      t6.innerHTML = "<span class=\"spin\"></span>";
-    else
-      t6.innerHTML = "<span style=\"color:var(--text-dim)\">&#8212;</span>";
+
     tr.appendChild(t1); tr.appendChild(t2); tr.appendChild(t3);
     tr.appendChild(t4); tr.appendChild(t5); tr.appendChild(t6);
     tbdy.appendChild(tr);
@@ -275,7 +277,7 @@ scrapeBtn.addEventListener("click", function() {
         country: e.country, branch: e.branch, rank: e.rank,
         gradeName: e.gradeName, fileName: e.fileName, imgUrl: e.imgUrl,
         ext: e.ext || ".svg",
-        status: "pending", blob: null, blobUrl: null, error: null
+        status: "pending", error: null
       };
     });
     render(); stats();
@@ -294,54 +296,67 @@ scrapeBtn.addEventListener("click", function() {
 dlBtn.addEventListener("click", function() {
   var workerUrl = workerUrlEl.value.trim();
   dlBtn.disabled = true;
-  downloadAll(workerUrl);
+  downloadAndZip(workerUrl);
 });
 
-function downloadAll(workerUrl) {
+function downloadAndZip(workerUrl) {
   var total = state.entries.length;
   var done = 0, errs = 0;
   prog.style.display = "block";
   pFill.style.width = "0%";
   pPct.textContent = "0%";
   log("Telechargement de " + total + " images...", "info");
-  var BATCH = 3;
+
+  var zip = new JSZip();
+  var BATCH = 2;
   var i = 0;
 
   function nextBatch() {
     if (i >= total) {
       pFill.style.width = "100%";
       pPct.textContent = "100%";
-      pTxt.textContent = "Termine - " + done + " succes, " + errs + " erreur(s)";
-      setTimeout(function(){ prog.style.display = "none"; }, 3000);
-      log("Termine: " + done + " succes, " + errs + " erreurs", done > 0 ? "ok" : "err");
-      stats();
+      pTxt.textContent = "Generation ZIP...";
+      log("Termine: " + done + " succes, " + errs + " erreurs. Generation ZIP...", done > 0 ? "ok" : "err");
+
+      zip.generateAsync(
+        {type: "blob", compression: "DEFLATE", compressionOptions: {level: 3}},
+        function(m) {
+          pTxt.textContent = "ZIP " + m.percent.toFixed(0) + "%";
+          pPct.textContent = m.percent.toFixed(0) + "%";
+        }
+      ).then(function(content) {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(content);
+        a.download = "OTAN_" + selectedBranch + "_" + new Date().toISOString().slice(0, 10) + ".zip";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        prog.style.display = "none";
+        actSt.innerHTML = "<span style=\"color:var(--accent2)\">OK - " + done + " fichiers ZIP telecharge</span>";
+        log("ZIP telecharge: " + done + " fichiers", "ok");
+        dlBtn.disabled = false;
+        stats();
+      }).catch(function(err) {
+        log("Erreur ZIP: " + err.message, "err");
+        prog.style.display = "none";
+        dlBtn.disabled = false;
+      });
       return Promise.resolve();
     }
+
     var batch = state.entries.slice(i, i + BATCH);
     i += BATCH;
+
     return Promise.all(batch.map(function(e) {
       e.status = "loading"; render();
       var proxyUrl = workerUrl + "/proxy-image?url=" + encodeURIComponent(e.imgUrl);
       return fetch(proxyUrl)
         .then(function(r) {
           if (!r.ok) throw new Error("HTTP " + r.status);
-          var ct = r.headers.get("content-type") || "";
-          return r.arrayBuffer().then(function(buf) {
-            var isSvg = ct.indexOf("svg") !== -1 || (e.ext && e.ext === ".svg");
-            var mimeType = isSvg ? "image/svg+xml" : "image/png";
-            return new Blob([buf], {type: mimeType});
-          });
+          return r.arrayBuffer();
         })
-        .then(function(blob) {
-          e.blob = blob;
-          // Preview : pour les SVG on cree une data URL pour l affichage
-          if (e.ext === ".svg") {
-            var reader = new FileReader();
-            reader.onload = function(ev) { e.blobUrl = ev.target.result; render(); };
-            reader.readAsDataURL(blob);
-          } else {
-            e.blobUrl = URL.createObjectURL(blob);
-          }
+        .then(function(buf) {
+          zip.file(e.fileName, buf);
+          buf = null;
           e.status = "ok"; done++;
           log("OK " + e.fileName, "ok");
         })
@@ -357,53 +372,12 @@ function downloadAll(workerUrl) {
           render(); stats();
         });
     })).then(function() {
-      return new Promise(function(r){ setTimeout(r, 150); });
+      return new Promise(function(r){ setTimeout(r, 100); });
     }).then(nextBatch);
   }
 
   return nextBatch();
 }
-
-zipBtn.addEventListener("click", function() {
-  var ok = state.entries.filter(function(e){ return e.status === "ok" && e.blob; });
-  if (!ok.length) return;
-  zipBtn.disabled = true;
-  actSt.innerHTML = "<span style=\"color:var(--warn)\">Generation ZIP...</span>";
-  log("ZIP: " + ok.length + " fichiers...", "info");
-  var zip = new JSZip();
-  var chain = Promise.resolve();
-  ok.forEach(function(e) {
-    chain = chain.then(function() {
-      return e.blob.arrayBuffer().then(function(buf) {
-        zip.file(e.fileName, buf);
-      });
-    });
-  });
-  chain.then(function() {
-    return zip.generateAsync(
-      {type: "blob", compression: "DEFLATE", compressionOptions: {level: 6}},
-      function(m) {
-        actSt.innerHTML = "<span style=\"color:var(--warn)\">ZIP " + m.percent.toFixed(0) + "%</span>";
-      }
-    );
-  })
-  .then(function(content) {
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(content);
-    a.download = "OTAN_" + selectedBranch + "_" + new Date().toISOString().slice(0, 10) + ".zip";
-    a.click();
-    URL.revokeObjectURL(a.href);
-    actSt.innerHTML = "<span style=\"color:var(--accent2)\">OK - " + ok.length + " fichiers</span>";
-    log("ZIP genere: " + ok.length + " fichiers", "ok");
-  })
-  .catch(function(e) {
-    actSt.innerHTML = "<span style=\"color:var(--danger)\">Erreur: " + e.message + "</span>";
-    log("Erreur ZIP: " + e.message, "err");
-  })
-  .finally(function() {
-    zipBtn.disabled = false;
-  });
-});
 
 document.querySelectorAll(".tab").forEach(function(t) {
   t.addEventListener("click", function() {
@@ -420,7 +394,6 @@ gi("srch").addEventListener("input", function(e) {
 });
 
 clearBtn.addEventListener("click", function() {
-  state.entries.forEach(function(e){ if (e.blobUrl && e.blobUrl.indexOf("blob:") === 0) URL.revokeObjectURL(e.blobUrl); });
   state.entries = [];
   wDot.className = "dot";
   wSt.textContent = "Non chargee";
