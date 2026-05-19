@@ -244,7 +244,6 @@ async function convertAll() {
 
   var W = parseInt(document.getElementById("pxWidth").value) || 512;
   var done = 0, errors = 0;
-  var zip = (!canWrite || !dirHandle) ? new JSZip() : null;
   var canvas = document.getElementById("cvs");
   var ctx    = canvas.getContext("2d");
 
@@ -256,21 +255,25 @@ async function convertAll() {
       // 1. Lire le SVG comme texte
       var svgText = await readAsText(item.file);
 
-      // 2. Convertir via canvas (same-origin car lu localement)
+      // 2. Convertir via canvas
       var blob = await svgTextToPngBlob(svgText, W, canvas, ctx);
 
       // 3. Ecrire le PNG
       if (canWrite && dirHandle) {
-        // Ecriture directe dans le dossier
+        // Ecriture directe dans le dossier (Chrome/Edge)
         var fileHandle = await dirHandle.getFileHandle(pngName, { create: true });
         var writable   = await fileHandle.createWritable();
         await writable.write(blob);
         await writable.close();
       } else {
-        // Fallback : ajouter au ZIP
-        var buf = await blob.arrayBuffer();
-        zip.file(pngName, buf);
-        buf = null;
+        // Fallback Firefox : telecharger chaque PNG individuellement
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = pngName;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        // Petite pause pour eviter que le navigateur bloque les telechargements multiples
+        await new Promise(function(r){ setTimeout(r, 200); });
       }
 
       done++;
@@ -284,21 +287,6 @@ async function convertAll() {
     var pct = Math.round((i + 1) / svgFiles.length * 100);
     document.getElementById("progFill").style.width = pct + "%";
     document.getElementById("progLbl").textContent = (i + 1) + " / " + svgFiles.length + " — " + pngName;
-  }
-
-  // Si mode ZIP : telecharger
-  if (zip) {
-    logMsg("Generation ZIP...", "info");
-    document.getElementById("progLbl").textContent = "Generation ZIP...";
-    var content = await zip.generateAsync(
-      { type: "blob", compression: "DEFLATE", compressionOptions: { level: 3 } },
-      function(m) { document.getElementById("progLbl").textContent = "ZIP " + m.percent.toFixed(0) + "%"; }
-    );
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(content);
-    a.download = "THOT_PNG_" + new Date().toISOString().slice(0,10) + ".zip";
-    a.click();
-    URL.revokeObjectURL(a.href);
   }
 
   document.getElementById("progFill").style.width = "100%";
@@ -371,7 +359,7 @@ function showResult(done, errors) {
   if (canWrite && dirHandle) {
     html += " — ecrits directement dans <strong>" + dirHandle.name + "/</strong>";
   } else {
-    html += " — telecharges dans un ZIP";
+    html += " — telecharges individuellement dans le dossier Telechargements";
   }
   if (errors > 0) html += "<br>&#9888; " + errors + " erreurs (voir le log)";
   html += "</div>";
