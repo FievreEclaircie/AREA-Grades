@@ -288,13 +288,13 @@ async function selectDest() {
       if (!isOTAN && !isNonOTAN) continue;
 
       var allianceKey = isOTAN ? "OTAN" : "NON-OTAN";
-      var allianceHandle = allianceEntry;
+      var allianceHandle = await destHandle.getDirectoryHandle(allianceEntry.name);
 
       // Scanner les pays dans ce dossier alliance
       for await (var countryEntry of allianceHandle.values()) {
         if (countryEntry.kind !== "directory") continue;
         var folderName = countryEntry.name; // ex: "France", "IRAN", "Allemagne"
-        console.log("Dossier trouve:", allianceKey, "|", folderName, "| code trouve:", findCodeByFolderName(folderName, allianceKey));
+        console.log("Scan pays:", allianceKey, folderName, "->", findCodeByFolderName(folderName, allianceKey));
 
         // Trouver le trigramme correspondant a ce nom de dossier
         var code = findCodeByFolderName(folderName, allianceKey);
