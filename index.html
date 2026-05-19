@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INSIGNUM — Gestion des insignes militaires</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap');
+  :root[data-theme="dark"]{--bg:#0a0c10;--surface:#0f1318;--surface2:#161b22;--border:#21262d;--accent:#58a6ff;--accent2:#3fb950;--warn:#d29922;--danger:#f85149;--text:#e6edf3;--text-muted:#7d8590;--text-dim:#484f58;}
+  :root[data-theme="light"]{--bg:#f6f8fa;--surface:#ffffff;--surface2:#f0f2f5;--border:#d0d7de;--accent:#0969da;--accent2:#1a7f37;--warn:#9a6700;--danger:#cf222e;--text:#1f2328;--text-muted:#656d76;--text-dim:#adb5bd;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:"Barlow",sans-serif;min-height:100vh;display:flex;flex-direction:column;transition:background .2s,color .2s;}
+
+  /* HEADER */
+  header{display:flex;align-items:center;padding:0 32px;height:56px;background:var(--surface);border-bottom:1px solid var(--border);}
+  .logo{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:24px;letter-spacing:5px;color:var(--accent);text-transform:uppercase;}
+  .logo em{color:var(--warn);font-style:normal;}
+  .theme-btn{margin-left:auto;background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:16px;color:var(--text-muted);transition:all .2s;}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* HERO */
+  .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 40px;text-align:center;}
+  .hero-logo{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:clamp(52px,10vw,96px);letter-spacing:12px;color:var(--accent);text-transform:uppercase;line-height:1;margin-bottom:6px;}
+  .hero-logo em{color:var(--warn);font-style:normal;}
+  .hero-sub{font-family:"Share Tech Mono",monospace;font-size:13px;letter-spacing:4px;color:var(--text-muted);text-transform:uppercase;margin-bottom:16px;}
+  .hero-desc{max-width:520px;font-size:15px;color:var(--text-muted);line-height:1.7;margin-bottom:52px;font-weight:300;}
+
+  /* CARDS */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:920px;width:100%;margin-bottom:48px;}
+  .tool-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;text-decoration:none;color:inherit;transition:all .2s;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:12px;}
+  .tool-card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .2s;}
+  .tool-card.blue::before{background:radial-gradient(ellipse at top left,rgba(88,166,255,.08),transparent 60%);}
+  .tool-card.green::before{background:radial-gradient(ellipse at top left,rgba(63,185,80,.08),transparent 60%);}
+  .tool-card.orange::before{background:radial-gradient(ellipse at top left,rgba(210,153,34,.08),transparent 60%);}
+  .tool-card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.3);}
+  .tool-card.blue:hover{border-color:rgba(88,166,255,.4);}
+  .tool-card.green:hover{border-color:rgba(63,185,80,.4);}
+  .tool-card.orange:hover{border-color:rgba(210,153,34,.4);}
+  .tool-card:hover::before{opacity:1;}
+  .card-num{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;}
+  .card-icon{font-size:36px;line-height:1;}
+  .card-title{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;text-transform:uppercase;}
+  .tool-card.blue .card-title{color:var(--accent);}
+  .tool-card.green .card-title{color:var(--accent2);}
+  .tool-card.orange .card-title{color:var(--warn);}
+  .card-desc{font-size:13px;color:var(--text-muted);line-height:1.6;flex:1;}
+  .card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+  .tag{font-family:"Share Tech Mono",monospace;font-size:10px;padding:2px 7px;border-radius:3px;border:1px solid var(--border);color:var(--text-dim);}
+  .card-arrow{font-size:18px;color:var(--text-dim);align-self:flex-end;transition:all .2s;}
+  .tool-card.blue:hover .card-arrow{color:var(--accent);transform:translateX(4px);}
+  .tool-card.green:hover .card-arrow{color:var(--accent2);transform:translateX(4px);}
+  .tool-card.orange:hover .card-arrow{color:var(--warn);transform:translateX(4px);}
+
+  /* WORKFLOW */
+  .workflow{display:flex;align-items:center;gap:8px;margin-bottom:48px;font-family:"Share Tech Mono",monospace;font-size:11px;color:var(--text-dim);flex-wrap:wrap;justify-content:center;}
+  .wf-step{padding:4px 12px;border:1px solid var(--border);border-radius:20px;white-space:nowrap;}
+  .wf-step.blue{border-color:rgba(88,166,255,.3);color:var(--accent);}
+  .wf-step.green{border-color:rgba(63,185,80,.3);color:var(--accent2);}
+  .wf-step.orange{border-color:rgba(210,153,34,.3);color:var(--warn);}
+  .wf-arrow{color:var(--text-dim);}
+
+  /* FOOTER */
+  footer{padding:20px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">INSIGN<em>UM</em></div>
+  <button class="theme-btn" id="themeBtn">&#9790;</button>
+</header>
+
+<main class="hero">
+
+  <div class="hero-logo">INSIGN<em>UM</em></div>
+  <div class="hero-sub">Gestion des insignes militaires</div>
+  <p class="hero-desc">
+    Suite d'outils pour collecter, nommer, trier et convertir les insignes de grades militaires
+    OTAN et non-OTAN depuis Wikipedia.
+  </p>
+
+  <div class="cards">
+
+    <a class="tool-card blue" href="nato-renamer.html">
+      <div class="card-num">Etape 01</div>
+      <div class="card-icon">&#127894;</div>
+      <div class="card-title">Collecte</div>
+      <div class="card-desc">
+        Scrape les pages Wikipedia de grades militaires, extrait les insignes
+        et les nomme selon la nomenclature <strong>PAYS_BRANCHE_GRADE_Nom</strong>.
+        Supporte les pages OTAN et non-OTAN via Claude.
+      </div>
+      <div class="card-tags">
+        <span class="tag">OTAN</span>
+        <span class="tag">NON-OTAN</span>
+        <span class="tag">Wikipedia</span>
+        <span class="tag">SVG / PNG</span>
+      </div>
+      <div class="card-arrow">&#8594;</div>
+    </a>
+
+    <a class="tool-card green" href="thot-sorter.html">
+      <div class="card-num">Etape 02</div>
+      <div class="card-icon">&#128193;</div>
+      <div class="card-title">Tri</div>
+      <div class="card-desc">
+        Lit le nom des fichiers et les deplace automatiquement dans l'arborescence
+        <strong>Grade / OTAN ou NON OTAN / Pays / Branche</strong>.
+        Les fichiers non reconnus restent dans "A trier".
+      </div>
+      <div class="card-tags">
+        <span class="tag">Chrome / Edge</span>
+        <span class="tag">Deplacement direct</span>
+        <span class="tag">IRGC</span>
+      </div>
+      <div class="card-arrow">&#8594;</div>
+    </a>
+
+    <a class="tool-card orange" href="thot-rename-ext.html">
+      <div class="card-num">Etape 03</div>
+      <div class="card-icon">&#128444;</div>
+      <div class="card-title">Conversion</div>
+      <div class="card-desc">
+        Convertit les fichiers SVG en vrais PNG (pixels) directement dans le dossier source.
+        Largeur configurable, hauteur proportionnelle automatique.
+      </div>
+      <div class="card-tags">
+        <span class="tag">SVG → PNG</span>
+        <span class="tag">Ecriture directe</span>
+        <span class="tag">Canvas</span>
+      </div>
+      <div class="card-arrow">&#8594;</div>
+    </a>
+
+  </div>
+
+  <div class="workflow">
+    <span class="wf-step blue">&#127894; Collecter depuis Wikipedia</span>
+    <span class="wf-arrow">&#8594;</span>
+    <span class="wf-step" style="border-color:var(--border)">Extraire le ZIP</span>
+    <span class="wf-arrow">&#8594;</span>
+    <span class="wf-step green">&#128193; Trier par pays / branche</span>
+    <span class="wf-arrow">&#8594;</span>
+    <span class="wf-step orange">&#128444; Convertir SVG en PNG</span>
+  </div>
+
+</main>
+
+<footer>INSIGNUM &mdash; GESTION DES INSIGNES MILITAIRES</footer>
+
+<script>
+var currentTheme = "dark";
+try {
+  var saved = localStorage.getItem("insignum_theme");
+  if (saved) {
+    currentTheme = saved;
+    document.documentElement.setAttribute("data-theme", currentTheme);
+    document.getElementById("themeBtn").innerHTML = currentTheme === "dark" ? "&#9790;" : "&#9788;";
+  }
+} catch(e) {}
+
+document.getElementById("themeBtn").addEventListener("click", function() {
+  currentTheme = currentTheme === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  this.innerHTML = currentTheme === "dark" ? "&#9790;" : "&#9788;";
+  try { localStorage.setItem("insignum_theme", currentTheme); } catch(e) {}
+});
+</script>
+</body>
+</html>
