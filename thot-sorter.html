@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>INSIGNUM — Tri & Organisation</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap');
   :root[data-theme="dark"]{--bg:#0a0c10;--surface:#0f1318;--surface2:#161b22;--border:#21262d;--border-active:#30363d;--accent:#58a6ff;--accent2:#3fb950;--warn:#d29922;--danger:#f85149;--text:#e6edf3;--text-muted:#7d8590;--text-dim:#484f58;}
   :root[data-theme="light"]{--bg:#f6f8fa;--surface:#ffffff;--surface2:#f0f2f5;--border:#d0d7de;--border-active:#b0b7be;--accent:#0969da;--accent2:#1a7f37;--warn:#9a6700;--danger:#cf222e;--text:#1f2328;--text-muted:#656d76;--text-dim:#adb5bd;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:"Barlow",sans-serif;font-size:14px;min-height:100vh;transition:background .2s,color .2s;}
   header{display:flex;align-items:center;gap:12px;padding:0 24px;height:56px;background:var(--surface);border-bottom:1px solid var(--border);}
-  .logo{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;}
+  .logo{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:22px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;}
   .logo em{color:var(--warn);font-style:normal;}
-  .logo span{color:var(--text-muted);font-weight:300;font-size:12px;letter-spacing:2px;margin-left:8px;font-style:normal;}
+  .logo span{color:var(--text-muted);font-weight:300;font-size:12px;letter-spacing:2px;margin-left:8px;}
   .nav-pills{margin-left:auto;display:flex;gap:6px;}
   .nav-btn{background:none;border:1px solid var(--border);border-radius:20px;padding:4px 14px;cursor:pointer;font-size:11px;font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .2s;text-transform:uppercase;}
   .nav-btn:hover{border-color:var(--accent);color:var(--accent);}
@@ -24,9 +24,9 @@
   .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:20px;}
   .card h2{font-family:"Barlow Condensed",sans-serif;font-size:15px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
   .step-num{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .drop-zone{border:2px dashed var(--border);border-radius:8px;padding:40px;text-align:center;cursor:pointer;transition:all .2s;font-family:"Share Tech Mono",monospace;font-size:13px;color:var(--text-muted);}
+  .drop-zone{border:2px dashed var(--border);border-radius:8px;padding:36px;text-align:center;cursor:pointer;transition:all .2s;font-family:"Share Tech Mono",monospace;font-size:13px;color:var(--text-muted);}
   .drop-zone:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.05);}
-  .drop-zone .icon{font-size:48px;margin-bottom:12px;opacity:.4;}
+  .drop-zone .icon{font-size:40px;margin-bottom:10px;opacity:.4;}
   .alert{padding:10px 14px;border-radius:6px;font-family:"Share Tech Mono",monospace;font-size:11px;margin-bottom:12px;line-height:1.6;}
   .alert-ok{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);color:var(--accent2);}
   .alert-warn{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.3);color:var(--warn);}
@@ -43,16 +43,15 @@
   .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
   .stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;}
   .stat-card .val{font-family:"Share Tech Mono",monospace;font-size:24px;font-weight:700;color:var(--accent);}
-  .stat-card .val.warn{color:var(--warn);}
-  .stat-card .val.ok{color:var(--accent2);}
+  .stat-card .val.ok{color:var(--accent2);}.stat-card .val.warn{color:var(--warn);}.stat-card .val.err{color:var(--danger);}
   .stat-card .lbl{font-size:11px;color:var(--text-muted);font-family:"Share Tech Mono",monospace;margin-top:2px;}
   .tree{font-family:"Share Tech Mono",monospace;font-size:12px;line-height:1.9;max-height:380px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:16px;}
-  .f-root{color:var(--accent);font-weight:700;}
-  .f-alliance{color:var(--accent);font-weight:600;}
+  .f-alliance{color:var(--accent);font-weight:700;}
   .f-country{color:var(--warn);font-weight:600;}
   .f-branch{color:var(--accent2);}
   .f-corps{color:var(--danger);}
   .f-count{color:var(--text-dim);font-size:10px;}
+  .f-new{color:var(--accent);font-size:10px;margin-left:4px;}
   .f-skip{color:var(--danger);}
   .progress{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin:12px 0;}
   .progress-fill{height:100%;background:var(--accent);width:0%;transition:width .15s;border-radius:2px;}
@@ -81,7 +80,7 @@
     <div class="drop-zone" id="folderZone">
       <div class="icon">&#128193;</div>
       <div>Clique pour selectionner le dossier <strong>"A trier"</strong></div>
-      <div style="margin-top:8px;font-size:10px;opacity:.6">Tous les fichiers SVG/PNG a la racine seront analyses</div>
+      <div style="margin-top:6px;font-size:10px;opacity:.6">Tous les fichiers SVG/PNG a la racine seront analyses</div>
     </div>
     <div class="btn-row">
       <button class="btn btn-primary" id="selectSourceBtn">&#128193; Selectionner "A trier"</button>
@@ -89,23 +88,24 @@
   </div>
 
   <div class="card" id="destCard" style="display:none">
-    <h2><span class="step-num">2</span> Dossier racine "Grade"</h2>
+    <h2><span class="step-num">2</span> Dossier racine "GRADE"</h2>
     <div class="alert alert-warn">
-      &#9888; Selectionne le dossier <strong>Grade</strong> (parent de OTAN et NON OTAN).<br>
-      Les sous-dossiers manquants seront crees automatiquement.<br>
+      &#9888; Selectionne le dossier <strong>GRADE</strong> (qui contient OTAN et NON-OTAN).<br>
+      Les dossiers existants seront utilises. Les manquants seront crees avec le nom francais du pays.<br>
       Les fichiers originaux seront <strong>supprimes</strong> apres deplacement reussi.
     </div>
     <div class="drop-zone" id="destZone">
       <div class="icon">&#128194;</div>
-      <div>Clique pour selectionner le dossier <strong>"Grade"</strong></div>
+      <div>Clique pour selectionner le dossier <strong>"GRADE"</strong></div>
     </div>
     <div class="btn-row">
-      <button class="btn btn-primary" id="selectDestBtn">&#128194; Selectionner "Grade"</button>
+      <button class="btn btn-primary" id="selectDestBtn">&#128194; Selectionner "GRADE"</button>
     </div>
   </div>
 
   <div class="card" id="previewCard" style="display:none">
     <h2><span class="step-num">3</span> Apercu du deplacement</h2>
+    <div class="alert alert-info" id="previewInfo"></div>
     <div class="stats-grid" id="statsGrid"></div>
     <div class="tree" id="treeEl"></div>
     <div class="btn-row">
@@ -127,20 +127,51 @@
 </div>
 
 <script>
-// ── PAYS OTAN ─────────────────────────────────────────────────────────────────
-var NATO_COUNTRIES = {
-  ALB:true, DEU:true, BEL:true, BGR:true, CAN:true, HRV:true,
-  DNK:true, ESP:true, EST:true, USA:true, FIN:true, FRA:true,
-  GRC:true, HUN:true, ISL:true, ITA:true, LVA:true, LTU:true,
-  LUX:true, MKD:true, MNE:true, NOR:true, NLD:true, POL:true,
-  PRT:true, CZE:true, ROU:true, GBR:true, SVK:true, SVN:true,
-  SWE:true, TUR:true
+// ── PAYS OTAN : trigramme → nom français ──────────────────────────────────────
+var NATO = {
+  ALB:"ALBANIE",   DEU:"ALLEMAGNE",  BEL:"BELGIQUE",   BGR:"BULGARIE",
+  CAN:"CANADA",    HRV:"CROATIE",    DNK:"DANEMARK",   ESP:"ESPAGNE",
+  EST:"ESTONIE",   USA:"ETATS-UNIS", FIN:"FINLANDE",   FRA:"FRANCE",
+  GRC:"GRECE",     HUN:"HONGRIE",    ISL:"ISLANDE",    ITA:"ITALIE",
+  LVA:"LETTONIE",  LTU:"LITUANIE",   LUX:"LUXEMBOURG", MKD:"MACEDOINE DU NORD",
+  MNE:"MONTENEGRO",NOR:"NORVEGE",    NLD:"PAYS-BAS",   POL:"POLOGNE",
+  PRT:"PORTUGAL",  CZE:"REPUBLIQUE TCHEQUE", ROU:"ROUMANIE",
+  GBR:"ROYAUME-UNI",SVK:"SLOVAQUIE", SVN:"SLOVENIE",
+  SWE:"SUEDE",     TUR:"TURQUIE"
 };
+
+// Noms non-OTAN (majuscules sans accents)
+var NON_NATO_NAMES = {
+  IRN:"IRAN",      RUS:"RUSSIE",     CHN:"CHINE",      ISR:"ISRAEL",
+  JOR:"JORDANIE",  IND:"INDE",       PAK:"PAKISTAN",   EGY:"EGYPTE",
+  SAU:"ARABIE SAOUDITE", BRA:"BRESIL", KOR:"COREE DU SUD",
+  JPN:"JAPON",     SYR:"SYRIE",      IRQ:"IRAK",       DZA:"ALGERIE",
+  MAR:"MAROC",     TUN:"TUNISIE",    LBY:"LIBYE",      ARE:"EMIRATS ARABES UNIS",
+  QAT:"QATAR",     KWT:"KOWEIT",     OMN:"OMAN",       BHR:"BAHREIN",
+  VNM:"VIETNAM",   PRK:"COREE DU NORD", IDN:"INDONESIE",
+  MYS:"MALAISIE",  THA:"THAILANDE",  PHL:"PHILIPPINES",
+  SGP:"SINGAPOUR", MMR:"MYANMAR",    ARM:"ARMENIE",
+  AZE:"AZERBAIDJAN",GEO:"GEORGIE",   KAZ:"KAZAKHSTAN",
+  UZB:"OUZBEKISTAN",ETH:"ETHIOPIE",  NGA:"NIGERIA",
+  ZAF:"AFRIQUE DU SUD", KEN:"KENYA", COL:"COLOMBIE",
+  CHL:"CHILI",     ARG:"ARGENTINE",  PER:"PEROU",      MEX:"MEXIQUE",
+  VEN:"VENEZUELA", CUB:"CUBA",       BLR:"BIELORUSSIE",SRB:"SERBIE"
+};
+
+function isNATO(code) { return !!NATO[code]; }
+function countryName(code) {
+  return NATO[code] || NON_NATO_NAMES[code] || code;
+}
+function allianceFolderName(code) {
+  return isNATO(code) ? "OTAN" : "NON-OTAN";
+}
 
 var sourceHandle = null;
 var destHandle   = null;
 var parsedFiles  = [];
 var skippedFiles = [];
+// Map: trigramme -> nom du dossier existant dans la destination
+var existingCountryFolders = {}; // { "OTAN": { "FRA": "France", ... }, "NON-OTAN": { "IRN": "IRAN", ... } }
 var currentTheme = "dark";
 var canWrite     = !!window.showDirectoryPicker;
 
@@ -155,19 +186,20 @@ document.getElementById("themeBtn").addEventListener("click", function() {
 var alertEl = document.getElementById("browserAlert");
 if (canWrite) {
   alertEl.className = "alert alert-ok";
-  alertEl.innerHTML = "&#10003; Chrome/Edge — deplacement direct possible.";
+  alertEl.innerHTML = "&#10003; Chrome/Edge detecte — deplacement direct possible.";
 } else {
   alertEl.className = "alert alert-err";
   alertEl.innerHTML = "&#10007; Firefox ne supporte pas l'ecriture dans les dossiers. Utilise Chrome ou Edge.";
   document.getElementById("selectSourceBtn").disabled = true;
 }
 
-// ── PARSING NOM ───────────────────────────────────────────────────────────────
+// ── PARSING NOM DE FICHIER ────────────────────────────────────────────────────
 function parseFileName(name) {
-  var base  = name.replace(/\.(svg|png)$/i, "");
-  var ext   = name.match(/\.(svg|png)$/i) ? name.match(/\.(svg|png)$/i)[0].toLowerCase() : null;
+  var ext   = name.match(/\.(svg|png)$/i);
+  if (!ext) return null;
+  var base  = name.slice(0, name.length - ext[0].length);
   var parts = base.split("_");
-  if (parts.length < 4 || !ext) return null;
+  if (parts.length < 4) return null;
 
   var country = parts[0];
   var branch  = parts[1];
@@ -185,10 +217,15 @@ function parseFileName(name) {
   if (!/^(AIR|TERRE|MER)$/.test(branch)) return null;
   if (!gradeRe.test(rank))               return null;
 
-  var alliance = NATO_COUNTRIES[country] ? "OTAN" : "NON OTAN";
-
-  return { country: country, branch: branch, corps: corps, rank: rank,
-           alliance: alliance, original: name, ext: ext };
+  return {
+    country  : country,
+    branch   : branch,
+    corps    : corps,
+    rank     : rank,
+    alliance : allianceFolderName(country),
+    original : name,
+    ext      : ext[0].toLowerCase()
+  };
 }
 
 // ── SELECTION SOURCE ──────────────────────────────────────────────────────────
@@ -236,8 +273,39 @@ async function selectDest() {
   if (!canWrite) return;
   try {
     destHandle = await window.showDirectoryPicker({ mode: "readwrite" });
-    logMsg("Destination: " + destHandle.name, "ok");
-    buildPreview();
+
+    // Scanner les dossiers existants dans GRADE/
+    // Structure attendue: GRADE/OTAN/France, GRADE/NON-OTAN/IRAN etc.
+    existingCountryFolders = { "OTAN": {}, "NON-OTAN": {} };
+
+    for await (var allianceEntry of destHandle.values()) {
+      if (allianceEntry.kind !== "directory") continue;
+      var allianceName = allianceEntry.name;
+
+      // Detecter si c'est un dossier OTAN ou NON-OTAN (flexible sur la casse et le tiret)
+      var isOTAN    = /^otan$/i.test(allianceName);
+      var isNonOTAN = /^non.otan$/i.test(allianceName);
+      if (!isOTAN && !isNonOTAN) continue;
+
+      var allianceKey = isOTAN ? "OTAN" : "NON-OTAN";
+      var allianceHandle = allianceEntry;
+
+      // Scanner les pays dans ce dossier alliance
+      for await (var countryEntry of allianceHandle.values()) {
+        if (countryEntry.kind !== "directory") continue;
+        var folderName = countryEntry.name; // ex: "France", "IRAN", "Allemagne"
+
+        // Trouver le trigramme correspondant a ce nom de dossier
+        var code = findCodeByFolderName(folderName, allianceKey);
+        if (code) {
+          existingCountryFolders[allianceKey][code] = folderName;
+          logMsg("Dossier existant: " + allianceName + "/" + folderName + " → " + code, "info");
+        }
+      }
+    }
+
+    logMsg("Destination scannee: " + destHandle.name, "ok");
+    await buildPreview();
     document.getElementById("previewCard").style.display = "block";
     document.getElementById("previewCard").scrollIntoView({ behavior: "smooth" });
   } catch(e) {
@@ -245,41 +313,98 @@ async function selectDest() {
   }
 }
 
+// Trouver le code trigramme correspondant a un nom de dossier existant
+function findCodeByFolderName(folderName, allianceKey) {
+  var lower = folderName.toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // enlever accents pour comparaison
+    .replace(/[-\s]/g, "");
+
+  var map = allianceKey === "OTAN" ? NATO : NON_NATO_NAMES;
+  var codes = Object.keys(map);
+  for (var i = 0; i < codes.length; i++) {
+    var code     = codes[i];
+    var expected = map[code].toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[-\s]/g, "");
+    if (lower === expected || lower === code.toLowerCase()) {
+      return code;
+    }
+  }
+  // Correspondance partielle (ex: "IRAN" → "Iran")
+  for (var j = 0; j < codes.length; j++) {
+    var c2 = codes[j];
+    var e2 = map[c2].toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[-\s]/g, "");
+    if (lower.indexOf(e2) !== -1 || e2.indexOf(lower) !== -1) {
+      return c2;
+    }
+  }
+  return null;
+}
+
+// Obtenir le nom du dossier pays a utiliser (existant ou nouveau)
+function getCountryFolderName(code, allianceKey) {
+  if (existingCountryFolders[allianceKey] && existingCountryFolders[allianceKey][code]) {
+    return { name: existingCountryFolders[allianceKey][code], isNew: false };
+  }
+  // Creer avec le nom francais
+  return { name: countryName(code), isNew: true };
+}
+
 // ── APERCU ────────────────────────────────────────────────────────────────────
-function buildPreview() {
-  var tree    = { "OTAN": {}, "NON OTAN": {} };
-  var byAlliance = { "OTAN": 0, "NON OTAN": 0 };
-  var byBranch   = {};
+async function buildPreview() {
+  var tree    = { "OTAN": {}, "NON-OTAN": {} };
+  var counts  = { nato: 0, nonNato: 0, newFolders: 0 };
+  var newFoldersList = [];
 
   parsedFiles.forEach(function(f) {
     var al  = f.alliance;
+    var cf  = getCountryFolderName(f.country, al);
     var key = f.corps ? f.branch + "/" + f.corps : f.branch;
-    if (!tree[al][f.country]) tree[al][f.country] = {};
-    if (!tree[al][f.country][key]) tree[al][f.country][key] = 0;
-    tree[al][f.country][key]++;
-    byAlliance[al]++;
-    byBranch[f.branch] = (byBranch[f.branch] || 0) + 1;
+    if (!tree[al][f.country]) {
+      tree[al][f.country] = { folderName: cf.name, isNew: cf.isNew, branches: {} };
+      if (cf.isNew) {
+        counts.newFolders++;
+        newFoldersList.push(al + "/" + cf.name);
+      }
+    }
+    if (!tree[al][f.country].branches[key]) tree[al][f.country].branches[key] = 0;
+    tree[al][f.country].branches[key]++;
+    if (al === "OTAN") counts.nato++; else counts.nonNato++;
   });
 
   document.getElementById("statsGrid").innerHTML =
-    statCard(parsedFiles.length, "Total", "") +
-    statCard(byAlliance["OTAN"],     "OTAN",     "ok") +
-    statCard(byAlliance["NON OTAN"], "Non-OTAN", "warn") +
-    statCard(skippedFiles.length,    "Ignores",  skippedFiles.length ? "warn" : "");
+    statCard(parsedFiles.length,  "Total",       "") +
+    statCard(counts.nato,         "OTAN",        "ok") +
+    statCard(counts.nonNato,      "Non-OTAN",    "warn") +
+    statCard(skippedFiles.length, "Ignores",     skippedFiles.length ? "err" : "") +
+    statCard(counts.newFolders,   "Nvx dossiers","");
 
-  // Arbre
+  var infoEl = document.getElementById("previewInfo");
+  if (counts.newFolders > 0) {
+    infoEl.className = "alert alert-warn";
+    infoEl.innerHTML = "&#9888; " + counts.newFolders + " nouveau(x) dossier(s) seront crees : <strong>" + newFoldersList.join(", ") + "</strong>";
+  } else {
+    infoEl.className = "alert alert-ok";
+    infoEl.innerHTML = "&#10003; Tous les dossiers pays existent deja — aucune creation necessaire.";
+  }
+
   var html = "<div style='margin-bottom:6px;color:var(--text-dim);font-size:10px'>" + destHandle.name + "/</div>";
-  ["OTAN", "NON OTAN"].forEach(function(al) {
-    var countries = Object.keys(tree[al]).sort();
-    if (!countries.length) return;
-    html += "<div><span class='f-alliance'>&#128193; " + al + "/</span> <span class='f-count'>(" + byAlliance[al] + " fichiers)</span></div>";
-    countries.forEach(function(country) {
-      var branches = Object.keys(tree[al][country]).sort();
+  ["OTAN", "NON-OTAN"].forEach(function(al) {
+    var entries = Object.keys(tree[al]);
+    if (!entries.length) return;
+    var total = al === "OTAN" ? counts.nato : counts.nonNato;
+    html += "<div><span class='f-alliance'>&#128193; " + al + "/</span> <span class='f-count'>(" + total + ")</span></div>";
+    entries.sort().forEach(function(code) {
+      var entry    = tree[al][code];
+      var branches = Object.keys(entry.branches).sort();
       var total    = 0;
-      branches.forEach(function(b) { total += tree[al][country][b]; });
-      html += "<div style='margin-left:20px'><span class='f-country'>&#128193; " + country + "/</span> <span class='f-count'>(" + total + ")</span></div>";
+      branches.forEach(function(b) { total += entry.branches[b]; });
+      var newTag   = entry.isNew ? "<span class='f-new'>[nouveau]</span>" : "";
+      html += "<div style='margin-left:20px'><span class='f-country'>&#128193; " + entry.folderName + "/</span>" + newTag + " <span class='f-count'>(" + total + ")</span></div>";
       branches.forEach(function(key) {
-        var count = tree[al][country][key];
+        var count = entry.branches[key];
         var parts = key.split("/");
         if (parts.length === 2) {
           html += "<div style='margin-left:40px'><span class='f-branch'>&#128193; " + parts[0] + "/</span></div>";
@@ -292,9 +417,8 @@ function buildPreview() {
   });
 
   if (skippedFiles.length) {
-    html += "<div style='margin-top:8px'><span class='f-skip'>&#9888; " + skippedFiles.length + " fichier(s) resteront dans A trier : ";
-    html += skippedFiles.slice(0, 3).join(", ");
-    if (skippedFiles.length > 3) html += " +" + (skippedFiles.length - 3) + " autres";
+    html += "<div style='margin-top:8px'><span class='f-skip'>&#9888; " + skippedFiles.length + " fichier(s) non reconnus resteront dans A trier";
+    if (skippedFiles.length <= 3) html += " : " + skippedFiles.join(", ");
     html += "</span></div>";
   }
 
@@ -312,52 +436,101 @@ document.getElementById("sortBtn").addEventListener("click", async function() {
   document.getElementById("progBar").style.display = "block";
   document.getElementById("progFill").style.width  = "0%";
 
-  var done = 0, errors = 0, leftInSource = 0;
-  var folderCache = {};
+  var done = 0, errors = 0;
+  var folderHandleCache = {};
 
-  async function getOrCreateFolder(pathParts) {
-    var key    = pathParts.join("/");
-    if (folderCache[key]) return folderCache[key];
-    var handle = destHandle;
-    for (var i = 0; i < pathParts.length; i++) {
-      handle = await handle.getDirectoryHandle(pathParts[i], { create: true });
+  // Obtenir ou créer un sous-dossier dans un handle parent
+  async function getOrCreate(parentHandle, name) {
+    return await parentHandle.getDirectoryHandle(name, { create: true });
+  }
+
+  // Obtenir le handle du dossier alliance (OTAN ou NON-OTAN) dans destHandle
+  // En cherchant d'abord un dossier existant (insensible a la casse)
+  async function getAllianceHandle(allianceKey) {
+    var cacheKey = "alliance_" + allianceKey;
+    if (folderHandleCache[cacheKey]) return folderHandleCache[cacheKey];
+
+    // Chercher un dossier existant (OTAN, otan, NON-OTAN, non-otan, etc.)
+    for await (var entry of destHandle.values()) {
+      if (entry.kind !== "directory") continue;
+      var isOTAN    = allianceKey === "OTAN"     && /^otan$/i.test(entry.name);
+      var isNonOTAN = allianceKey === "NON-OTAN" && /^non.otan$/i.test(entry.name);
+      if (isOTAN || isNonOTAN) {
+        folderHandleCache[cacheKey] = entry;
+        return entry;
+      }
     }
-    folderCache[key] = handle;
-    return handle;
+    // Creer si absent
+    var h = await getOrCreate(destHandle, allianceKey);
+    folderHandleCache[cacheKey] = h;
+    return h;
   }
 
   for (var i = 0; i < parsedFiles.length; i++) {
     var f = parsedFiles[i];
     try {
-      // Construire le chemin : OTAN/FRA/AIR/ ou NON OTAN/IRN/AIR/IRGC/
-      var pathParts = [f.alliance, f.country, f.branch];
-      if (f.corps) pathParts.push(f.corps);
+      // 1. Dossier alliance
+      var allianceHandle = await getAllianceHandle(f.alliance);
 
-      var folder = await getOrCreateFolder(pathParts);
+      // 2. Dossier pays : utiliser le nom existant ou creer avec nom francais
+      var cf = getCountryFolderName(f.country, f.alliance);
+      var cacheKeyCountry = f.alliance + "/" + cf.name;
+      var countryHandle;
+      if (folderHandleCache[cacheKeyCountry]) {
+        countryHandle = folderHandleCache[cacheKeyCountry];
+      } else {
+        countryHandle = await getOrCreate(allianceHandle, cf.name);
+        folderHandleCache[cacheKeyCountry] = countryHandle;
+        if (cf.isNew) {
+          logMsg("Cree: " + f.alliance + "/" + cf.name, "warn");
+          // Mettre a jour le cache des dossiers existants
+          existingCountryFolders[f.alliance][f.country] = cf.name;
+        }
+      }
 
-      // Lire le fichier source
+      // 3. Dossier branche
+      var cacheKeyBranch = cacheKeyCountry + "/" + f.branch;
+      var branchHandle;
+      if (folderHandleCache[cacheKeyBranch]) {
+        branchHandle = folderHandleCache[cacheKeyBranch];
+      } else {
+        branchHandle = await getOrCreate(countryHandle, f.branch);
+        folderHandleCache[cacheKeyBranch] = branchHandle;
+      }
+
+      // 4. Dossier corps si present (ex: IRGC)
+      var targetHandle = branchHandle;
+      if (f.corps) {
+        var cacheKeyCorps = cacheKeyBranch + "/" + f.corps;
+        if (folderHandleCache[cacheKeyCorps]) {
+          targetHandle = folderHandleCache[cacheKeyCorps];
+        } else {
+          targetHandle = await getOrCreate(branchHandle, f.corps);
+          folderHandleCache[cacheKeyCorps] = targetHandle;
+        }
+      }
+
+      // 5. Lire le fichier source
       var file = await f.entryHandle.getFile();
       var buf  = await file.arrayBuffer();
 
-      // Ecrire dans la destination
-      var destFile = await folder.getFileHandle(f.original, { create: true });
+      // 6. Ecrire dans la destination
+      var destFile = await targetHandle.getFileHandle(f.original, { create: true });
       var writable = await destFile.createWritable();
       await writable.write(buf);
       await writable.close();
       buf = null;
 
-      // Supprimer l'original
+      // 7. Supprimer l'original
       await sourceHandle.removeEntry(f.original);
 
       done++;
-      if (i % 10 === 0 || i === parsedFiles.length - 1) {
-        logMsg("OK " + f.alliance + "/" + f.country + "/" + f.branch + "/" + f.original, "ok");
-      }
+      var path = f.alliance + "/" + cf.name + "/" + f.branch + (f.corps ? "/" + f.corps : "");
+      if (done % 10 === 0 || done === 1) logMsg("OK → " + path + "/" + f.original, "ok");
 
     } catch(err) {
       errors++;
-      leftInSource++;
-      logMsg("ERR " + f.original + ": " + err.message + " — laisse dans A trier", "err");
+      logMsg("ERR " + f.original + ": " + err.message, "err");
     }
 
     var pct = Math.round((i + 1) / parsedFiles.length * 100);
@@ -365,32 +538,26 @@ document.getElementById("sortBtn").addEventListener("click", async function() {
     document.getElementById("progLbl").textContent  = (i + 1) + " / " + parsedFiles.length + " — " + f.original;
   }
 
-  logMsg("Termine: " + done + " deplaces, " + errors + " erreurs laisses dans A trier, " + skippedFiles.length + " non reconnus laisses", done > 0 ? "ok" : "err");
-  showResult(done, errors, leftInSource);
+  logMsg("Termine: " + done + " deplaces, " + errors + " erreurs, " + skippedFiles.length + " ignores dans A trier", done > 0 ? "ok" : "err");
+  showResult(done, errors);
   this.disabled = false;
 });
 
-function showResult(done, errors, leftInSource) {
+function showResult(done, errors) {
   var card = document.getElementById("resultCard");
   card.style.display = "block";
-
   var html = "<div class='alert " + (errors === 0 ? "alert-ok" : "alert-warn") + "'>";
   html += "&#10003; " + done + " fichiers deplaces vers <strong>" + destHandle.name + "/</strong>";
-  if (errors > 0) html += "<br>&#9888; " + errors + " fichiers laisses dans \"A trier\" (erreur de deplacement)";
-  if (skippedFiles.length > 0) html += "<br>&#9432; " + skippedFiles.length + " fichiers non reconnus laisses dans \"A trier\"";
+  if (errors > 0) html += "<br>&#9888; " + errors + " fichiers laisses dans \"A trier\" (erreur)";
+  if (skippedFiles.length) html += "<br>&#9432; " + skippedFiles.length + " non reconnus laisses dans \"A trier\"";
   html += "</div>";
   html += "<div class='btn-row'><button class='btn btn-primary' onclick='window.location.reload()'>&#8635; Nouveau tri</button></div>";
-
   document.getElementById("resultContent").innerHTML = html;
   card.scrollIntoView({ behavior: "smooth" });
 }
 
-// ── CLEAR ─────────────────────────────────────────────────────────────────────
-document.getElementById("clearBtn").addEventListener("click", function() {
-  window.location.reload();
-});
+document.getElementById("clearBtn").addEventListener("click", function() { window.location.reload(); });
 
-// ── LOG ───────────────────────────────────────────────────────────────────────
 function logMsg(msg, type) {
   type = type || "";
   var d = document.createElement("div");
