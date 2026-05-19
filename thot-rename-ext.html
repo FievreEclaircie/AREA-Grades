@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INSIGNUM — Conversion SVG→PNG</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap');
+  :root[data-theme="dark"]{--bg:#0a0c10;--surface:#0f1318;--surface2:#161b22;--border:#21262d;--border-active:#30363d;--accent:#58a6ff;--accent2:#3fb950;--warn:#d29922;--danger:#f85149;--text:#e6edf3;--text-muted:#7d8590;--text-dim:#484f58;}
+  :root[data-theme="light"]{--bg:#f6f8fa;--surface:#ffffff;--surface2:#f0f2f5;--border:#d0d7de;--border-active:#b0b7be;--accent:#0969da;--accent2:#1a7f37;--warn:#9a6700;--danger:#cf222e;--text:#1f2328;--text-muted:#656d76;--text-dim:#adb5bd;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:"Barlow",sans-serif;font-size:14px;min-height:100vh;transition:background .2s,color .2s;}
+  header{display:flex;align-items:center;gap:12px;padding:0 24px;height:56px;background:var(--surface);border-bottom:1px solid var(--border);}
+  .logo{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;}
+  .logo em{color:var(--warn);font-style:normal;}
+  .logo span{color:var(--text-muted);font-weight:300;font-size:13px;letter-spacing:2px;margin-left:8px;}
+  .nav-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s;text-transform:uppercase;}
+  .nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .nav-pills{display:flex;gap:6px;}
+  .nav-btn{background:none;border:1px solid var(--border);border-radius:20px;padding:4px 14px;cursor:pointer;font-size:11px;font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .2s;text-transform:uppercase;}
+  .nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .nav-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .theme-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:16px;color:var(--text-muted);transition:all .2s;margin-left:8px;}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .container{max-width:800px;margin:0 auto;padding:32px 24px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:20px;}
+  .card h2{font-family:"Barlow Condensed",sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;}
+  .drop-zone{border:2px dashed var(--border);border-radius:8px;padding:40px;text-align:center;cursor:pointer;transition:all .2s;font-family:"Share Tech Mono",monospace;font-size:13px;color:var(--text-muted);}
+  .drop-zone:hover,.drop-zone.drag-over{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.05);}
+  .drop-zone .icon{font-size:48px;margin-bottom:12px;opacity:.4;}
+  .alert{padding:10px 14px;border-radius:6px;font-family:"Share Tech Mono",monospace;font-size:11px;margin-bottom:12px;line-height:1.6;}
+  .alert-ok{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);color:var(--accent2);}
+  .alert-warn{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.3);color:var(--warn);}
+  .alert-err{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3);color:var(--danger);}
+  .alert-info{background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.3);color:var(--accent);}
+  .row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  label{font-size:11px;color:var(--text-muted);font-family:"Share Tech Mono",monospace;white-space:nowrap;}
+  input[type=number]{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:7px 10px;color:var(--text);font-family:"Share Tech Mono",monospace;font-size:12px;outline:none;width:80px;transition:border-color .2s;}
+  input[type=number]:focus{border-color:var(--accent);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:all .15s;text-transform:uppercase;}
+  .btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+  .btn:disabled{opacity:.3;cursor:not-allowed;}
+  .btn-success{background:var(--accent2);color:#fff;border-color:var(--accent2);}
+  .btn-success:hover:not(:disabled){opacity:.85;color:#fff;}
+  .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn-primary:hover:not(:disabled){opacity:.85;color:#fff;}
+  .btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px;}
+  .stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;}
+  .stat-card .val{font-family:"Share Tech Mono",monospace;font-size:24px;font-weight:700;color:var(--accent);}
+  .stat-card .lbl{font-size:11px;color:var(--text-muted);font-family:"Share Tech Mono",monospace;margin-top:2px;}
+  .progress{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin:12px 0;}
+  .progress-fill{height:100%;background:var(--accent);width:0%;transition:width .2s;border-radius:2px;}
+  .prog-lbl{font-family:"Share Tech Mono",monospace;font-size:11px;color:var(--text-muted);}
+  .log{font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-dim);max-height:120px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:12px;line-height:1.7;}
+  .log .ok{color:var(--accent2);}.log .err{color:var(--danger);}.log .warn{color:var(--warn);}.log .info{color:var(--accent);}
+  input[type=file]{display:none;}
+  canvas{display:none;}
+  ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:3px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">INSIGN<em>UM</em> <span>// conversion svg→png</span></div>
+  <nav class="nav-pills" style="margin-left:auto;display:flex;gap:6px;">
+    <a class="nav-btn" href="https://fievreeclaircie.github.io/rename/nato-renamer.html">&#127894; Collecte</a>
+    <a class="nav-btn" href="https://fievreeclaircie.github.io/rename/thot-sorter.html">&#128193; Tri</a>
+    <a class="nav-btn active" href="https://fievreeclaircie.github.io/rename/thot-rename-ext.html">&#128444; Conversion</a>
+  </nav>
+  <button class="theme-btn" id="themeBtn" style="margin-left:8px;">&#9790;</button>
+</header>
+
+<div class="container">
+
+  <!-- ÉTAPE 1 : Choisir le dossier source -->
+  <div class="card">
+    <h2>&#9312; Choisir le dossier contenant les SVG</h2>
+    <div class="alert alert-info" id="browserAlert">
+      &#9432; Necessite Chrome ou Edge — Firefox ne supporte pas l'ecriture directe dans les dossiers.
+    </div>
+    <div class="drop-zone" id="folderZone">
+      <div class="icon">&#128193;</div>
+      <div>Clique pour selectionner le dossier de tes fichiers SVG</div>
+      <div style="margin-top:8px;font-size:10px;opacity:.6">Le dossier sera analyse et les PNG ecrits directement dedans</div>
+    </div>
+    <input type="file" id="fileInput" multiple accept=".svg">
+    <div class="btn-row">
+      <button class="btn btn-primary" id="selectFolderBtn">&#128193; Selectionner le dossier</button>
+      <button class="btn" id="selectFilesBtn">&#128441; Selectionner des fichiers SVG</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 2 : Options et apercu -->
+  <div class="card" id="optionsCard" style="display:none">
+    <h2>&#9313; Options de conversion</h2>
+
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <div class="row">
+      <label>Taille PNG (largeur px)</label>
+      <input type="number" id="pxWidth" value="512" min="64" max="4096" step="32">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim)">px (hauteur proportionnelle)</span>
+    </div>
+
+    <div class="row">
+      <label>Mode ecriture</label>
+      <span id="modeLabel" style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--accent);">—</span>
+    </div>
+
+    <div class="alert alert-warn" id="overwriteAlert" style="display:none">
+      &#9888; Les fichiers PNG seront ecrits directement dans le dossier source. Les SVG originaux sont conserves.
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-success" id="convertBtn">&#10003; Convertir en PNG</button>
+      <button class="btn" id="clearBtn">&#128465; Effacer</button>
+    </div>
+    <div class="progress" id="progBar" style="display:none">
+      <div class="progress-fill" id="progFill"></div>
+    </div>
+    <div class="prog-lbl" id="progLbl"></div>
+    <div class="log" id="logEl"></div>
+  </div>
+
+  <!-- RÉSULTAT -->
+  <div class="card" id="resultCard" style="display:none">
+    <h2>&#9314; Conversion terminee</h2>
+    <div id="resultContent"></div>
+  </div>
+
+</div>
+
+<canvas id="cvs"></canvas>
+
+<script>
+var svgFiles   = [];    // {name, file, dirHandle (optionnel)}
+var dirHandle  = null;  // handle du dossier si showDirectoryPicker disponible
+var canWrite   = false; // peut ecrire directement
+var currentTheme = "dark";
+
+// ── THEME ────────────────────────────────────────────────────────────────────
+document.getElementById("themeBtn").addEventListener("click", function() {
+  currentTheme = currentTheme === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  document.getElementById("themeBtn").innerHTML = currentTheme === "dark" ? "&#9790;" : "&#9788;";
+});
+
+// ── DETECTION NAVIGATEUR ─────────────────────────────────────────────────────
+if (window.showDirectoryPicker) {
+  document.getElementById("browserAlert").className = "alert alert-ok";
+  document.getElementById("browserAlert").innerHTML = "&#10003; Chrome/Edge detecte — ecriture directe dans le dossier possible.";
+  canWrite = true;
+} else {
+  document.getElementById("browserAlert").className = "alert alert-warn";
+  document.getElementById("browserAlert").innerHTML = "&#9888; Firefox detecte — les PNG seront telecharges dans un ZIP (pas d'ecriture directe possible).";
+  canWrite = false;
+}
+
+// ── SELECTION DOSSIER (Chrome/Edge) ──────────────────────────────────────────
+document.getElementById("folderZone").addEventListener("click", function() {
+  if (canWrite) {
+    selectDirectory();
+  } else {
+    document.getElementById("fileInput").click();
+  }
+});
+
+document.getElementById("selectFolderBtn").addEventListener("click", function() {
+  if (canWrite) {
+    selectDirectory();
+  } else {
+    document.getElementById("fileInput").click();
+  }
+});
+
+document.getElementById("selectFilesBtn").addEventListener("click", function() {
+  document.getElementById("fileInput").click();
+});
+
+async function selectDirectory() {
+  try {
+    dirHandle = await window.showDirectoryPicker({ mode: "readwrite" });
+    svgFiles = [];
+    // Lire tous les fichiers SVG du dossier
+    for await (var entry of dirHandle.values()) {
+      if (entry.kind === "file" && entry.name.toLowerCase().endsWith(".svg")) {
+        var file = await entry.getFile();
+        svgFiles.push({ name: entry.name, file: file, entryHandle: entry });
+      }
+    }
+    if (!svgFiles.length) {
+      logMsg("Aucun fichier SVG trouve dans ce dossier", "warn");
+      return;
+    }
+    logMsg("Dossier ouvert: " + svgFiles.length + " SVG trouves", "ok");
+    document.getElementById("modeLabel").textContent = "Ecriture directe dans " + dirHandle.name + "/";
+    document.getElementById("overwriteAlert").style.display = "block";
+    showOptions();
+  } catch(e) {
+    if (e.name !== "AbortError") logMsg("Erreur: " + e.message, "err");
+  }
+}
+
+// ── SELECTION FICHIERS (fallback) ─────────────────────────────────────────────
+document.getElementById("fileInput").addEventListener("change", function(e) {
+  var files = Array.from(e.target.files).filter(function(f) {
+    return f.name.toLowerCase().endsWith(".svg");
+  });
+  if (!files.length) { logMsg("Aucun SVG selectionne", "warn"); return; }
+  svgFiles = files.map(function(f) { return { name: f.name, file: f }; });
+  dirHandle = null;
+  logMsg(svgFiles.length + " SVG selectionnes (mode ZIP)", "ok");
+  document.getElementById("modeLabel").textContent = "Telechargement ZIP (Firefox)";
+  document.getElementById("overwriteAlert").style.display = "none";
+  showOptions();
+});
+
+function showOptions() {
+  var statsGrid = document.getElementById("statsGrid");
+  statsGrid.innerHTML =
+    statCard(svgFiles.length, "SVG a convertir") +
+    statCard(document.getElementById("pxWidth").value, "Largeur px") +
+    statCard(canWrite && dirHandle ? "Directe" : "ZIP", "Mode ecriture");
+  document.getElementById("optionsCard").style.display = "block";
+  document.getElementById("optionsCard").scrollIntoView({ behavior: "smooth" });
+}
+
+document.getElementById("pxWidth").addEventListener("change", function() {
+  if (svgFiles.length) showOptions();
+});
+
+function statCard(val, lbl) {
+  return "<div class='stat-card'><div class='val'>" + val + "</div><div class='lbl'>" + lbl + "</div></div>";
+}
+
+// ── CONVERSION SVG → PNG ──────────────────────────────────────────────────────
+document.getElementById("convertBtn").addEventListener("click", convertAll);
+
+async function convertAll() {
+  if (!svgFiles.length) return;
+  document.getElementById("convertBtn").disabled = true;
+  document.getElementById("progBar").style.display = "block";
+  document.getElementById("progFill").style.width = "0%";
+
+  var W = parseInt(document.getElementById("pxWidth").value) || 512;
+  var done = 0, errors = 0;
+  var zip = (!canWrite || !dirHandle) ? new JSZip() : null;
+  var canvas = document.getElementById("cvs");
+  var ctx    = canvas.getContext("2d");
+
+  for (var i = 0; i < svgFiles.length; i++) {
+    var item = svgFiles[i];
+    var pngName = item.name.replace(/\.svg$/i, ".png");
+
+    try {
+      // 1. Lire le SVG comme texte
+      var svgText = await readAsText(item.file);
+
+      // 2. Convertir via canvas (same-origin car lu localement)
+      var blob = await svgTextToPngBlob(svgText, W, canvas, ctx);
+
+      // 3. Ecrire le PNG
+      if (canWrite && dirHandle) {
+        // Ecriture directe dans le dossier
+        var fileHandle = await dirHandle.getFileHandle(pngName, { create: true });
+        var writable   = await fileHandle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+      } else {
+        // Fallback : ajouter au ZIP
+        var buf = await blob.arrayBuffer();
+        zip.file(pngName, buf);
+        buf = null;
+      }
+
+      done++;
+      logMsg("OK " + pngName, "ok");
+
+    } catch(err) {
+      errors++;
+      logMsg("ERR " + item.name + ": " + err.message, "err");
+    }
+
+    var pct = Math.round((i + 1) / svgFiles.length * 100);
+    document.getElementById("progFill").style.width = pct + "%";
+    document.getElementById("progLbl").textContent = (i + 1) + " / " + svgFiles.length + " — " + pngName;
+  }
+
+  // Si mode ZIP : telecharger
+  if (zip) {
+    logMsg("Generation ZIP...", "info");
+    document.getElementById("progLbl").textContent = "Generation ZIP...";
+    var content = await zip.generateAsync(
+      { type: "blob", compression: "DEFLATE", compressionOptions: { level: 3 } },
+      function(m) { document.getElementById("progLbl").textContent = "ZIP " + m.percent.toFixed(0) + "%"; }
+    );
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(content);
+    a.download = "THOT_PNG_" + new Date().toISOString().slice(0,10) + ".zip";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  document.getElementById("progFill").style.width = "100%";
+  document.getElementById("progLbl").textContent = "Termine — " + done + " PNG convertis";
+  logMsg("Conversion terminee: " + done + " succes, " + errors + " erreurs", done > 0 ? "ok" : "err");
+  showResult(done, errors);
+  document.getElementById("convertBtn").disabled = false;
+}
+
+// ── CONVERSION SVG TEXT → PNG BLOB ───────────────────────────────────────────
+function svgTextToPngBlob(svgText, W, canvas, ctx) {
+  return new Promise(function(resolve, reject) {
+    // Nettoyer le SVG et encoder en data URL
+    var cleaned = svgText.trim();
+    // S'assurer que le SVG a un namespace
+    if (cleaned.indexOf("xmlns") === -1) {
+      cleaned = cleaned.replace("<svg", "<svg xmlns=\"http://www.w3.org/2000/svg\"");
+    }
+    var encoded = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(cleaned);
+    var img = new Image();
+
+    var timer = setTimeout(function() {
+      reject(new Error("Timeout SVG"));
+    }, 10000);
+
+    img.onload = function() {
+      clearTimeout(timer);
+      try {
+        var nw = img.naturalWidth  || W;
+        var nh = img.naturalHeight || W;
+        var ratio = nw / nh;
+        if (!isFinite(ratio) || ratio <= 0) ratio = 1;
+        canvas.width  = W;
+        canvas.height = Math.round(W / ratio);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(function(b) {
+          if (b) resolve(b);
+          else   reject(new Error("toBlob retourne null"));
+        }, "image/png");
+      } catch(e) {
+        reject(e);
+      }
+    };
+
+    img.onerror = function() {
+      clearTimeout(timer);
+      reject(new Error("Impossible de charger le SVG"));
+    };
+
+    img.src = encoded;
+  });
+}
+
+// ── UTILITAIRES ───────────────────────────────────────────────────────────────
+function readAsText(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload  = function(e) { resolve(e.target.result); };
+    reader.onerror = function()  { reject(new Error("Lecture impossible")); };
+    reader.readAsText(file);
+  });
+}
+
+function showResult(done, errors) {
+  var card = document.getElementById("resultCard");
+  card.style.display = "block";
+  var html = "<div class='alert " + (errors === 0 ? "alert-ok" : "alert-warn") + "'>";
+  html += "&#10003; " + done + " fichiers SVG convertis en PNG";
+  if (canWrite && dirHandle) {
+    html += " — ecrits directement dans <strong>" + dirHandle.name + "/</strong>";
+  } else {
+    html += " — telecharges dans un ZIP";
+  }
+  if (errors > 0) html += "<br>&#9888; " + errors + " erreurs (voir le log)";
+  html += "</div>";
+  html += "<div class='btn-row'><button class='btn btn-primary' onclick='window.location.reload()'>&#8635; Nouvelle conversion</button></div>";
+  document.getElementById("resultContent").innerHTML = html;
+  card.scrollIntoView({ behavior: "smooth" });
+}
+
+// ── CLEAR ─────────────────────────────────────────────────────────────────────
+document.getElementById("clearBtn").addEventListener("click", function() {
+  svgFiles = []; dirHandle = null;
+  document.getElementById("fileInput").value = "";
+  document.getElementById("optionsCard").style.display = "none";
+  document.getElementById("resultCard").style.display = "none";
+  document.getElementById("logEl").innerHTML = "";
+  logMsg("Reinitialise", "warn");
+});
+
+// ── LOG ───────────────────────────────────────────────────────────────────────
+function logMsg(msg, type) {
+  type = type || "";
+  var d = document.createElement("div");
+  d.className = type;
+  d.textContent = "[" + new Date().toLocaleTimeString("fr-FR") + "] " + msg;
+  var logEl = document.getElementById("logEl");
+  logEl.appendChild(d);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+logMsg("Selectionne le dossier contenant tes SVG pour commencer.", "info");
+</script>
+</body>
+</html>

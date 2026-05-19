@@ -3,103 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THOT — Tri et Organisation</title>
+<title>INSIGNUM — Tri & Organisation</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap');
   :root[data-theme="dark"]{--bg:#0a0c10;--surface:#0f1318;--surface2:#161b22;--border:#21262d;--border-active:#30363d;--accent:#58a6ff;--accent2:#3fb950;--warn:#d29922;--danger:#f85149;--text:#e6edf3;--text-muted:#7d8590;--text-dim:#484f58;}
   :root[data-theme="light"]{--bg:#f6f8fa;--surface:#ffffff;--surface2:#f0f2f5;--border:#d0d7de;--border-active:#b0b7be;--accent:#0969da;--accent2:#1a7f37;--warn:#9a6700;--danger:#cf222e;--text:#1f2328;--text-muted:#656d76;--text-dim:#adb5bd;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:"Barlow",sans-serif;font-size:14px;min-height:100vh;transition:background .2s,color .2s;}
-  header{display:flex;align-items:center;gap:16px;padding:0 24px;height:56px;background:var(--surface);border-bottom:1px solid var(--border);}
+  header{display:flex;align-items:center;gap:12px;padding:0 24px;height:56px;background:var(--surface);border-bottom:1px solid var(--border);}
   .logo{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;}
-  .logo span{color:var(--text-muted);font-weight:300;font-size:13px;letter-spacing:2px;margin-left:8px;}
-  .theme-btn{margin-left:auto;background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:16px;color:var(--text-muted);}
-  .theme-btn:hover{border-color:var(--accent);color:var(--accent);}
-  .nav-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s;text-transform:uppercase;}
+  .logo em{color:var(--warn);font-style:normal;}
+  .logo span{color:var(--text-muted);font-weight:300;font-size:12px;letter-spacing:2px;margin-left:8px;font-style:normal;}
+  .nav-pills{margin-left:auto;display:flex;gap:6px;}
+  .nav-btn{background:none;border:1px solid var(--border);border-radius:20px;padding:4px 14px;cursor:pointer;font-size:11px;font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .2s;text-transform:uppercase;}
   .nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .nav-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .theme-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:16px;color:var(--text-muted);transition:all .2s;margin-left:8px;}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent);}
   .container{max-width:900px;margin:0 auto;padding:32px 24px;}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:20px;}
-  .card h2{font-family:"Barlow Condensed",sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;}
+  .card h2{font-family:"Barlow Condensed",sans-serif;font-size:15px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .step-num{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
   .drop-zone{border:2px dashed var(--border);border-radius:8px;padding:40px;text-align:center;cursor:pointer;transition:all .2s;font-family:"Share Tech Mono",monospace;font-size:13px;color:var(--text-muted);}
-  .drop-zone:hover,.drop-zone.drag-over{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.05);}
+  .drop-zone:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.05);}
   .drop-zone .icon{font-size:48px;margin-bottom:12px;opacity:.4;}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:all .15s;text-transform:uppercase;}
+  .alert{padding:10px 14px;border-radius:6px;font-family:"Share Tech Mono",monospace;font-size:11px;margin-bottom:12px;line-height:1.6;}
+  .alert-ok{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);color:var(--accent2);}
+  .alert-warn{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.3);color:var(--warn);}
+  .alert-err{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3);color:var(--danger);}
+  .alert-info{background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.3);color:var(--accent);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:all .15s;text-transform:uppercase;}
   .btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
   .btn:disabled{opacity:.3;cursor:not-allowed;}
-  .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);}
-  .btn-primary:hover:not(:disabled){opacity:.85;color:#fff;}
   .btn-success{background:var(--accent2);color:#fff;border-color:var(--accent2);}
   .btn-success:hover:not(:disabled){opacity:.85;color:#fff;}
+  .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn-primary:hover:not(:disabled){opacity:.85;color:#fff;}
   .btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
-  .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px;}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
   .stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;}
-  .stat-card .val{font-family:"Share Tech Mono",monospace;font-size:22px;font-weight:700;color:var(--accent);}
+  .stat-card .val{font-family:"Share Tech Mono",monospace;font-size:24px;font-weight:700;color:var(--accent);}
+  .stat-card .val.warn{color:var(--warn);}
+  .stat-card .val.ok{color:var(--accent2);}
   .stat-card .lbl{font-size:11px;color:var(--text-muted);font-family:"Share Tech Mono",monospace;margin-top:2px;}
-  .tree{font-family:"Share Tech Mono",monospace;font-size:12px;line-height:1.8;max-height:400px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:16px;}
-  .tree .folder{color:var(--accent);font-weight:700;}
-  .tree .sub{color:var(--warn);}
-  .tree .corps{color:var(--danger);}
-  .tree .file{color:var(--text-muted);}
-  .tree .count{color:var(--accent2);}
+  .tree{font-family:"Share Tech Mono",monospace;font-size:12px;line-height:1.9;max-height:380px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:16px;}
+  .f-root{color:var(--accent);font-weight:700;}
+  .f-alliance{color:var(--accent);font-weight:600;}
+  .f-country{color:var(--warn);font-weight:600;}
+  .f-branch{color:var(--accent2);}
+  .f-corps{color:var(--danger);}
+  .f-count{color:var(--text-dim);font-size:10px;}
+  .f-skip{color:var(--danger);}
   .progress{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin:12px 0;}
-  .progress-fill{height:100%;background:var(--accent);width:0%;transition:width .3s;border-radius:2px;}
-  .progress-fill.indeterminate{width:30%!important;animation:indeterminate 1.5s infinite;}
-  @keyframes indeterminate{0%{margin-left:-30%}100%{margin-left:100%}}
-  .prog-lbl{font-family:"Share Tech Mono",monospace;font-size:11px;color:var(--text-muted);}
-  .badge{font-family:"Share Tech Mono",monospace;font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600;display:inline-block;}
-  .bc{background:rgba(63,185,80,.15);color:var(--accent2);border:1px solid rgba(63,185,80,.3);}
-  .bb{background:rgba(88,166,255,.15);color:var(--accent);border:1px solid rgba(88,166,255,.3);}
-  .bd{background:rgba(248,81,73,.15);color:var(--danger);border:1px solid rgba(248,81,73,.3);}
-  .bw{background:rgba(210,153,34,.15);color:var(--warn);border:1px solid rgba(210,153,34,.3);}
-  .alert{padding:10px 14px;border-radius:6px;font-family:"Share Tech Mono",monospace;font-size:11px;margin-bottom:12px;}
-  .alert-warn{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.3);color:var(--warn);}
-  .alert-ok{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);color:var(--accent2);}
-  .alert-err{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3);color:var(--danger);}
-  .log{font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-dim);max-height:120px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:12px;line-height:1.7;}
-  .log .ok{color:var(--accent2);}
-  .log .err{color:var(--danger);}
-  .log .warn{color:var(--warn);}
-  .log .info{color:var(--accent);}
+  .progress-fill{height:100%;background:var(--accent);width:0%;transition:width .15s;border-radius:2px;}
+  .prog-lbl{font-family:"Share Tech Mono",monospace;font-size:11px;color:var(--text-muted);min-height:16px;}
+  .log{font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--text-dim);max-height:140px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:12px;line-height:1.7;}
+  .log .ok{color:var(--accent2);}.log .err{color:var(--danger);}.log .warn{color:var(--warn);}.log .info{color:var(--accent);}
   ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:3px;}
-
-  /* Mode sombre pour la zone de dépôt de fichiers */
-  input[type=file]{display:none;}
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">THOT <span>// TRI ET ORGANISATION</span></div>
-  <a class="nav-btn" href="https://fievreeclaircie.github.io/rename/nato-renamer.html" title="Retour a l'outil de renommage" style="margin-left:auto;">&#8592; Renommage OTAN</a>
-  <button class="theme-btn" id="themeBtn" style="margin-left:8px;">&#9790;</button>
+  <div class="logo">INSIGN<em>UM</em> <span>// tri & organisation</span></div>
+  <nav class="nav-pills">
+    <a class="nav-btn" href="https://fievreeclaircie.github.io/rename/nato-renamer.html">&#127894; Collecte</a>
+    <a class="nav-btn active" href="https://fievreeclaircie.github.io/rename/thot-sorter.html">&#128193; Tri</a>
+    <a class="nav-btn" href="https://fievreeclaircie.github.io/rename/thot-rename-ext.html">&#128444; Conversion</a>
+  </nav>
+  <button class="theme-btn" id="themeBtn">&#9790;</button>
 </header>
 
 <div class="container">
 
-  <!-- ÉTAPE 1 : Sélection des fichiers -->
   <div class="card">
-    <h2>&#9312; Selectionner les fichiers a trier</h2>
-    <div class="alert alert-warn" id="compatAlert">
-      &#9888; Necessite Chrome ou Edge (API File System Access). Firefox supporte uniquement la lecture, pas l'ecriture dans les dossiers.
+    <h2><span class="step-num">1</span> Dossier "A trier"</h2>
+    <div class="alert alert-info" id="browserAlert">&#9432; Verif navigateur...</div>
+    <div class="drop-zone" id="folderZone">
+      <div class="icon">&#128193;</div>
+      <div>Clique pour selectionner le dossier <strong>"A trier"</strong></div>
+      <div style="margin-top:8px;font-size:10px;opacity:.6">Tous les fichiers SVG/PNG a la racine seront analyses</div>
     </div>
-    <div class="drop-zone" id="dropZone">
-      <div class="icon">&#128230;</div>
-      <div>Glisse tes fichiers SVG/PNG ici<br>ou clique pour selectionner</div>
-      <div style="margin-top:8px;font-size:10px;opacity:.6">Selectionne tous les fichiers du ZIP extrait (Ctrl+A dans le dossier)</div>
-    </div>
-    <input type="file" id="fileInput" multiple accept=".svg,.png">
     <div class="btn-row">
-      <button class="btn btn-primary" id="selectFilesBtn">&#128193; Choisir les fichiers</button>
-      <button class="btn" id="clearBtn" disabled>&#128465; Effacer</button>
+      <button class="btn btn-primary" id="selectSourceBtn">&#128193; Selectionner "A trier"</button>
     </div>
   </div>
 
-  <!-- STATS après chargement -->
-  <div class="card" id="statsCard" style="display:none">
-    <h2>&#9313; Apercu de l'organisation</h2>
-    <div class="stats-grid" id="statsGrid"></div>
-    <div id="treeContainer" class="tree"></div>
+  <div class="card" id="destCard" style="display:none">
+    <h2><span class="step-num">2</span> Dossier racine "Grade"</h2>
+    <div class="alert alert-warn">
+      &#9888; Selectionne le dossier <strong>Grade</strong> (parent de OTAN et NON OTAN).<br>
+      Les sous-dossiers manquants seront crees automatiquement.<br>
+      Les fichiers originaux seront <strong>supprimes</strong> apres deplacement reussi.
+    </div>
+    <div class="drop-zone" id="destZone">
+      <div class="icon">&#128194;</div>
+      <div>Clique pour selectionner le dossier <strong>"Grade"</strong></div>
+    </div>
     <div class="btn-row">
-      <button class="btn btn-success" id="sortBtn">&#10003; Trier et telecharger en ZIP</button>
+      <button class="btn btn-primary" id="selectDestBtn">&#128194; Selectionner "Grade"</button>
+    </div>
+  </div>
+
+  <div class="card" id="previewCard" style="display:none">
+    <h2><span class="step-num">3</span> Apercu du deplacement</h2>
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="tree" id="treeEl"></div>
+    <div class="btn-row">
+      <button class="btn btn-success" id="sortBtn">&#8680; Deplacer les fichiers</button>
+      <button class="btn" id="clearBtn">&#8635; Recommencer</button>
     </div>
     <div class="progress" id="progBar" style="display:none">
       <div class="progress-fill" id="progFill"></div>
@@ -108,334 +119,289 @@
     <div class="log" id="logEl"></div>
   </div>
 
-  <!-- RÉSULTAT -->
   <div class="card" id="resultCard" style="display:none">
-    <h2>&#9314; Resultat</h2>
+    <h2><span class="step-num">4</span> Resultat</h2>
     <div id="resultContent"></div>
   </div>
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-var files = [];
-var parsedFiles = [];
-var currentTheme = "dark";
+// ── PAYS OTAN ─────────────────────────────────────────────────────────────────
+var NATO_COUNTRIES = {
+  ALB:true, DEU:true, BEL:true, BGR:true, CAN:true, HRV:true,
+  DNK:true, ESP:true, EST:true, USA:true, FIN:true, FRA:true,
+  GRC:true, HUN:true, ISL:true, ITA:true, LVA:true, LTU:true,
+  LUX:true, MKD:true, MNE:true, NOR:true, NLD:true, POL:true,
+  PRT:true, CZE:true, ROU:true, GBR:true, SVK:true, SVN:true,
+  SWE:true, TUR:true
+};
 
-// ── THEME ────────────────────────────────────────────────────────────────────
+var sourceHandle = null;
+var destHandle   = null;
+var parsedFiles  = [];
+var skippedFiles = [];
+var currentTheme = "dark";
+var canWrite     = !!window.showDirectoryPicker;
+
+// ── THEME ─────────────────────────────────────────────────────────────────────
 document.getElementById("themeBtn").addEventListener("click", function() {
   currentTheme = currentTheme === "dark" ? "light" : "dark";
   document.documentElement.setAttribute("data-theme", currentTheme);
   document.getElementById("themeBtn").innerHTML = currentTheme === "dark" ? "&#9790;" : "&#9788;";
 });
 
-// Verifier compatibilite navigateur
-if (!window.showOpenFilePicker && !window.FileReader) {
-  document.getElementById("compatAlert").innerHTML = "&#10007; Navigateur non compatible. Utilise Chrome, Edge ou Firefox.";
-  document.getElementById("compatAlert").className = "alert alert-err";
+// ── COMPAT ────────────────────────────────────────────────────────────────────
+var alertEl = document.getElementById("browserAlert");
+if (canWrite) {
+  alertEl.className = "alert alert-ok";
+  alertEl.innerHTML = "&#10003; Chrome/Edge — deplacement direct possible.";
 } else {
-  document.getElementById("compatAlert").innerHTML = "&#10003; Navigateur compatible — glisse tes fichiers ou clique le bouton.";
-  document.getElementById("compatAlert").className = "alert alert-ok";
+  alertEl.className = "alert alert-err";
+  alertEl.innerHTML = "&#10007; Firefox ne supporte pas l'ecriture dans les dossiers. Utilise Chrome ou Edge.";
+  document.getElementById("selectSourceBtn").disabled = true;
 }
 
-// ── PARSING DU NOM DE FICHIER ─────────────────────────────────────────────────
-// Formats supportes :
-// PAYS_BRANCHE_GRADE_Nom.ext          (standard)
-// PAYS_BRANCHE_CORPS_GRADE_Nom.ext    (avec corps ex: IRGC)
+// ── PARSING NOM ───────────────────────────────────────────────────────────────
 function parseFileName(name) {
-  // Retirer extension
-  var base = name.replace(/\.(svg|png)$/i, "");
+  var base  = name.replace(/\.(svg|png)$/i, "");
+  var ext   = name.match(/\.(svg|png)$/i) ? name.match(/\.(svg|png)$/i)[0].toLowerCase() : null;
   var parts = base.split("_");
-  if (parts.length < 4) return null;
+  if (parts.length < 4 || !ext) return null;
 
   var country = parts[0];
   var branch  = parts[1];
+  var gradeRe = /^(OF|OR)\d+$|^OFD$/i;
 
-  // Detecter si le 3e segment est un corps (pas un code OF/OR)
-  var gradePattern = /^(OF|OR)\d+$|^OFD$/i;
-  var corps = "";
+  var corps   = "";
   var rankIdx = 2;
-
-  if (parts.length >= 5 && !gradePattern.test(parts[2])) {
+  if (parts.length >= 5 && !gradeRe.test(parts[2])) {
     corps   = parts[2];
     rankIdx = 3;
   }
 
-  var rank     = parts[rankIdx] || "";
-  var gradeName = parts.slice(rankIdx + 1).join("_") || "";
-
-  // Valider pays (3 lettres) et branche (AIR/TERRE/MER)
-  if (!/^[A-Z]{2,3}$/.test(country)) return null;
+  var rank = parts[rankIdx] || "";
+  if (!/^[A-Z]{2,3}$/.test(country))     return null;
   if (!/^(AIR|TERRE|MER)$/.test(branch)) return null;
-  if (!gradePattern.test(rank)) return null;
+  if (!gradeRe.test(rank))               return null;
 
-  return { country: country, branch: branch, corps: corps, rank: rank, gradeName: gradeName, original: name };
+  var alliance = NATO_COUNTRIES[country] ? "OTAN" : "NON OTAN";
+
+  return { country: country, branch: branch, corps: corps, rank: rank,
+           alliance: alliance, original: name, ext: ext };
 }
 
-// ── CHARGEMENT DES FICHIERS ──────────────────────────────────────────────────
-function handleFiles(fileList) {
-  files = Array.from(fileList).filter(function(f) {
-    return /\.(svg|png)$/i.test(f.name);
-  });
-  parsedFiles = [];
-  var skipped = 0;
-  files.forEach(function(f) {
-    var parsed = parseFileName(f.name);
-    if (parsed) {
-      parsed.fileObj = f;
-      parsedFiles.push(parsed);
-    } else {
-      skipped++;
+// ── SELECTION SOURCE ──────────────────────────────────────────────────────────
+document.getElementById("folderZone").addEventListener("click", selectSource);
+document.getElementById("selectSourceBtn").addEventListener("click", selectSource);
+
+async function selectSource() {
+  if (!canWrite) return;
+  try {
+    sourceHandle = await window.showDirectoryPicker({ mode: "readwrite" });
+    parsedFiles  = [];
+    skippedFiles = [];
+
+    for await (var entry of sourceHandle.values()) {
+      if (entry.kind !== "file") continue;
+      if (!/\.(svg|png)$/i.test(entry.name)) continue;
+      var parsed = parseFileName(entry.name);
+      if (parsed) {
+        parsed.entryHandle = entry;
+        parsedFiles.push(parsed);
+      } else {
+        skippedFiles.push(entry.name);
+      }
     }
-  });
-  if (parsedFiles.length === 0) {
-    logMsg("Aucun fichier avec nomenclature THOT reconnu. Verifie que les fichiers sont au format PAYS_BRANCHE_GRADE_Nom.svg", "err");
-    return;
+
+    logMsg("Source: " + sourceHandle.name + " — " + parsedFiles.length + " reconnus, " + skippedFiles.length + " ignores", "ok");
+
+    if (!parsedFiles.length) {
+      logMsg("Aucun fichier INSIGNUM trouve. Verifie la nomenclature PAYS_BRANCHE_GRADE_Nom.", "err");
+      return;
+    }
+
+    document.getElementById("destCard").style.display = "block";
+    document.getElementById("destCard").scrollIntoView({ behavior: "smooth" });
+  } catch(e) {
+    if (e.name !== "AbortError") logMsg("Erreur: " + e.message, "err");
   }
-  logMsg("Charge: " + parsedFiles.length + " fichiers reconnus" + (skipped > 0 ? ", " + skipped + " ignores" : ""), "ok");
-  document.getElementById("clearBtn").disabled = false;
-  buildPreview();
-  document.getElementById("statsCard").style.display = "block";
 }
 
-document.getElementById("dropZone").addEventListener("click", function() {
-  document.getElementById("fileInput").click();
-});
-document.getElementById("selectFilesBtn").addEventListener("click", function() {
-  document.getElementById("fileInput").click();
-});
-document.getElementById("fileInput").addEventListener("change", function(e) {
-  handleFiles(e.target.files);
-});
+// ── SELECTION DESTINATION ─────────────────────────────────────────────────────
+document.getElementById("destZone").addEventListener("click", selectDest);
+document.getElementById("selectDestBtn").addEventListener("click", selectDest);
 
-// Drag & drop
-var dz = document.getElementById("dropZone");
-dz.addEventListener("dragover", function(e) { e.preventDefault(); dz.classList.add("drag-over"); });
-dz.addEventListener("dragleave", function() { dz.classList.remove("drag-over"); });
-dz.addEventListener("drop", function(e) {
-  e.preventDefault();
-  dz.classList.remove("drag-over");
-  handleFiles(e.dataTransfer.files);
-});
+async function selectDest() {
+  if (!canWrite) return;
+  try {
+    destHandle = await window.showDirectoryPicker({ mode: "readwrite" });
+    logMsg("Destination: " + destHandle.name, "ok");
+    buildPreview();
+    document.getElementById("previewCard").style.display = "block";
+    document.getElementById("previewCard").scrollIntoView({ behavior: "smooth" });
+  } catch(e) {
+    if (e.name !== "AbortError") logMsg("Erreur: " + e.message, "err");
+  }
+}
 
-// ── CONSTRUCTION DE L'APERÇU ─────────────────────────────────────────────────
+// ── APERCU ────────────────────────────────────────────────────────────────────
 function buildPreview() {
-  // Construire la structure arborescente
-  var tree = {};
-  var totalCountries = {};
-  var totalBranches  = {};
-  var totalCorps     = {};
+  var tree    = { "OTAN": {}, "NON OTAN": {} };
+  var byAlliance = { "OTAN": 0, "NON OTAN": 0 };
+  var byBranch   = {};
 
   parsedFiles.forEach(function(f) {
-    if (!tree[f.country]) tree[f.country] = {};
-    var branchKey = f.corps ? f.branch + "_" + f.corps : f.branch;
-    if (!tree[f.country][branchKey]) tree[f.country][branchKey] = [];
-    tree[f.country][branchKey].push(f);
-    totalCountries[f.country] = true;
-    totalBranches[f.branch]   = true;
-    if (f.corps) totalCorps[f.corps] = true;
+    var al  = f.alliance;
+    var key = f.corps ? f.branch + "/" + f.corps : f.branch;
+    if (!tree[al][f.country]) tree[al][f.country] = {};
+    if (!tree[al][f.country][key]) tree[al][f.country][key] = 0;
+    tree[al][f.country][key]++;
+    byAlliance[al]++;
+    byBranch[f.branch] = (byBranch[f.branch] || 0) + 1;
   });
 
-  // Stats
-  var statsGrid = document.getElementById("statsGrid");
-  statsGrid.innerHTML =
-    statCard(parsedFiles.length, "Fichiers") +
-    statCard(Object.keys(totalCountries).length, "Pays") +
-    statCard(Object.keys(totalBranches).length, "Branches") +
-    (Object.keys(totalCorps).length > 0 ? statCard(Object.keys(totalCorps).length, "Corps speciaux") : "");
+  document.getElementById("statsGrid").innerHTML =
+    statCard(parsedFiles.length, "Total", "") +
+    statCard(byAlliance["OTAN"],     "OTAN",     "ok") +
+    statCard(byAlliance["NON OTAN"], "Non-OTAN", "warn") +
+    statCard(skippedFiles.length,    "Ignores",  skippedFiles.length ? "warn" : "");
 
   // Arbre
-  var treeHtml = "";
-  var countries = Object.keys(tree).sort();
-  countries.forEach(function(country) {
-    var branches = Object.keys(tree[country]).sort();
-    var countryTotal = 0;
-    branches.forEach(function(b) { countryTotal += tree[country][b].length; });
-    treeHtml += "<div><span class='folder'>&#128193; " + country + "/</span> <span class='count'>(" + countryTotal + " fichiers)</span></div>";
-    branches.forEach(function(branchKey) {
-      var count = tree[country][branchKey].length;
-      var isCorps = branchKey.indexOf("_") !== -1;
-      if (isCorps) {
-        var parts = branchKey.split("_");
-        treeHtml += "<div style='margin-left:20px'><span class='sub'>&#128193; " + parts[0] + "/</span></div>";
-        treeHtml += "<div style='margin-left:40px'><span class='corps'>&#128193; " + parts[1] + "/</span> <span class='count'>(" + count + ")</span></div>";
-      } else {
-        treeHtml += "<div style='margin-left:20px'><span class='sub'>&#128193; " + branchKey + "/</span> <span class='count'>(" + count + ")</span></div>";
-      }
-      // Montrer les 3 premiers fichiers comme exemple
-      var examples = tree[country][branchKey].slice(0, 3);
-      examples.forEach(function(f) {
-        treeHtml += "<div style='margin-left:" + (isCorps ? 60 : 40) + "px'><span class='file'>&#128441; " + f.original + "</span></div>";
+  var html = "<div style='margin-bottom:6px;color:var(--text-dim);font-size:10px'>" + destHandle.name + "/</div>";
+  ["OTAN", "NON OTAN"].forEach(function(al) {
+    var countries = Object.keys(tree[al]).sort();
+    if (!countries.length) return;
+    html += "<div><span class='f-alliance'>&#128193; " + al + "/</span> <span class='f-count'>(" + byAlliance[al] + " fichiers)</span></div>";
+    countries.forEach(function(country) {
+      var branches = Object.keys(tree[al][country]).sort();
+      var total    = 0;
+      branches.forEach(function(b) { total += tree[al][country][b]; });
+      html += "<div style='margin-left:20px'><span class='f-country'>&#128193; " + country + "/</span> <span class='f-count'>(" + total + ")</span></div>";
+      branches.forEach(function(key) {
+        var count = tree[al][country][key];
+        var parts = key.split("/");
+        if (parts.length === 2) {
+          html += "<div style='margin-left:40px'><span class='f-branch'>&#128193; " + parts[0] + "/</span></div>";
+          html += "<div style='margin-left:60px'><span class='f-corps'>&#128193; " + parts[1] + "/</span> <span class='f-count'>(" + count + ")</span></div>";
+        } else {
+          html += "<div style='margin-left:40px'><span class='f-branch'>&#128193; " + key + "/</span> <span class='f-count'>(" + count + ")</span></div>";
+        }
       });
-      if (count > 3) {
-        treeHtml += "<div style='margin-left:" + (isCorps ? 60 : 40) + "px'><span class='file' style='opacity:.5'>... et " + (count - 3) + " autres</span></div>";
-      }
     });
   });
-  document.getElementById("treeContainer").innerHTML = treeHtml;
+
+  if (skippedFiles.length) {
+    html += "<div style='margin-top:8px'><span class='f-skip'>&#9888; " + skippedFiles.length + " fichier(s) resteront dans A trier : ";
+    html += skippedFiles.slice(0, 3).join(", ");
+    if (skippedFiles.length > 3) html += " +" + (skippedFiles.length - 3) + " autres";
+    html += "</span></div>";
+  }
+
+  document.getElementById("treeEl").innerHTML = html;
 }
 
-function statCard(val, lbl) {
-  return "<div class='stat-card'><div class='val'>" + val + "</div><div class='lbl'>" + lbl + "</div></div>";
+function statCard(val, lbl, type) {
+  return "<div class='stat-card'><div class='val " + type + "'>" + val + "</div><div class='lbl'>" + lbl + "</div></div>";
 }
 
-// ── TRI ET GÉNÉRATION DU ZIP ──────────────────────────────────────────────────
-document.getElementById("sortBtn").addEventListener("click", sortAndZip);
-
-async function sortAndZip() {
-  if (!parsedFiles.length) return;
-  document.getElementById("sortBtn").disabled = true;
+// ── DEPLACEMENT ───────────────────────────────────────────────────────────────
+document.getElementById("sortBtn").addEventListener("click", async function() {
+  if (!parsedFiles.length || !destHandle) return;
+  this.disabled = true;
   document.getElementById("progBar").style.display = "block";
-  document.getElementById("progFill").className = "progress-fill indeterminate";
-  document.getElementById("progLbl").textContent = "Lecture des fichiers...";
-  logMsg("Debut du tri de " + parsedFiles.length + " fichiers...", "info");
+  document.getElementById("progFill").style.width  = "0%";
 
-  var zip = new JSZip();
-  var done = 0;
-  var errors = 0;
+  var done = 0, errors = 0, leftInSource = 0;
+  var folderCache = {};
+
+  async function getOrCreateFolder(pathParts) {
+    var key    = pathParts.join("/");
+    if (folderCache[key]) return folderCache[key];
+    var handle = destHandle;
+    for (var i = 0; i < pathParts.length; i++) {
+      handle = await handle.getDirectoryHandle(pathParts[i], { create: true });
+    }
+    folderCache[key] = handle;
+    return handle;
+  }
 
   for (var i = 0; i < parsedFiles.length; i++) {
     var f = parsedFiles[i];
     try {
-      var buf = await readFileAsArrayBuffer(f.fileObj);
+      // Construire le chemin : OTAN/FRA/AIR/ ou NON OTAN/IRN/AIR/IRGC/
+      var pathParts = [f.alliance, f.country, f.branch];
+      if (f.corps) pathParts.push(f.corps);
 
-      // Construire le chemin dans le ZIP
-      // Structure : PAYS/BRANCHE/fichier.svg
-      //         ou : PAYS/BRANCHE/CORPS/fichier.svg
-      var zipPath;
-      if (f.corps) {
-        zipPath = f.country + "/" + f.branch + "/" + f.corps + "/" + f.original;
-      } else {
-        zipPath = f.country + "/" + f.branch + "/" + f.original;
-      }
+      var folder = await getOrCreateFolder(pathParts);
 
-      zip.file(zipPath, buf);
+      // Lire le fichier source
+      var file = await f.entryHandle.getFile();
+      var buf  = await file.arrayBuffer();
+
+      // Ecrire dans la destination
+      var destFile = await folder.getFileHandle(f.original, { create: true });
+      var writable = await destFile.createWritable();
+      await writable.write(buf);
+      await writable.close();
+      buf = null;
+
+      // Supprimer l'original
+      await sourceHandle.removeEntry(f.original);
+
       done++;
-
-      var pct = Math.round((i + 1) / parsedFiles.length * 100);
-      document.getElementById("progFill").className = "progress-fill";
-      document.getElementById("progFill").style.width = pct + "%";
-      document.getElementById("progLbl").textContent = (i + 1) + " / " + parsedFiles.length + " — " + f.original;
-
-      if (i % 20 === 0) logMsg("Traite " + (i + 1) + "/" + parsedFiles.length, "ok");
+      if (i % 10 === 0 || i === parsedFiles.length - 1) {
+        logMsg("OK " + f.alliance + "/" + f.country + "/" + f.branch + "/" + f.original, "ok");
+      }
 
     } catch(err) {
       errors++;
-      logMsg("ERR " + f.original + ": " + err.message, "err");
+      leftInSource++;
+      logMsg("ERR " + f.original + ": " + err.message + " — laisse dans A trier", "err");
     }
+
+    var pct = Math.round((i + 1) / parsedFiles.length * 100);
+    document.getElementById("progFill").style.width = pct + "%";
+    document.getElementById("progLbl").textContent  = (i + 1) + " / " + parsedFiles.length + " — " + f.original;
   }
 
-  logMsg("Lecture terminee. Generation ZIP...", "info");
-  document.getElementById("progFill").className = "progress-fill indeterminate";
-  document.getElementById("progLbl").textContent = "Generation ZIP...";
-
-  try {
-    var content = await zip.generateAsync(
-      { type: "blob", compression: "DEFLATE", compressionOptions: { level: 6 } },
-      function(meta) {
-        document.getElementById("progLbl").textContent = "ZIP " + meta.percent.toFixed(0) + "%";
-      }
-    );
-
-    // Telecharger le ZIP
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(content);
-    a.download = "THOT_TRIE_" + new Date().toISOString().slice(0, 10) + ".zip";
-    a.click();
-    URL.revokeObjectURL(a.href);
-
-    document.getElementById("progFill").className = "progress-fill";
-    document.getElementById("progFill").style.width = "100%";
-    document.getElementById("progLbl").textContent = "Termine — " + done + " fichiers tries";
-    logMsg("ZIP telecharge avec succes: " + done + " fichiers, " + errors + " erreurs", "ok");
-
-    showResult(done, errors, zip);
-
-  } catch(zipErr) {
-    logMsg("Erreur generation ZIP: " + zipErr.message, "err");
-  }
-
-  document.getElementById("sortBtn").disabled = false;
-}
-
-function readFileAsArrayBuffer(file) {
-  return new Promise(function(resolve, reject) {
-    var reader = new FileReader();
-    reader.onload = function(e) { resolve(e.target.result); };
-    reader.onerror = function() { reject(new Error("Lecture impossible")); };
-    reader.readAsArrayBuffer(file);
-  });
-}
-
-function showResult(done, errors, zip) {
-  var resultCard = document.getElementById("resultCard");
-  var resultContent = document.getElementById("resultContent");
-  resultCard.style.display = "block";
-
-  // Construire le resume de l'arborescence finale
-  var structure = {};
-  parsedFiles.forEach(function(f) {
-    var country = f.country;
-    var folder  = f.corps ? f.branch + "/" + f.corps : f.branch;
-    if (!structure[country]) structure[country] = {};
-    if (!structure[country][folder]) structure[country][folder] = 0;
-    structure[country][folder]++;
-  });
-
-  var html = "<div class='alert " + (errors === 0 ? "alert-ok" : "alert-warn") + "'>";
-  html += "&#10003; " + done + " fichiers tries en " + Object.keys(structure).length + " pays";
-  if (errors > 0) html += " — " + errors + " erreurs";
-  html += "</div>";
-
-  html += "<div class='tree'>";
-  html += "<div style='margin-bottom:8px;color:var(--text-muted);font-size:11px'>Structure du ZIP telecharge :</div>";
-  Object.keys(structure).sort().forEach(function(country) {
-    html += "<div><span class='folder'>&#128193; " + country + "/</span></div>";
-    Object.keys(structure[country]).sort().forEach(function(folder) {
-      var count = structure[country][folder];
-      var parts = folder.split("/");
-      if (parts.length === 2) {
-        html += "<div style='margin-left:20px'><span class='sub'>&#128193; " + parts[0] + "/</span></div>";
-        html += "<div style='margin-left:40px'><span class='corps'>&#128193; " + parts[1] + "/</span> <span class='count'>(" + count + " fichiers)</span></div>";
-      } else {
-        html += "<div style='margin-left:20px'><span class='sub'>&#128193; " + folder + "/</span> <span class='count'>(" + count + " fichiers)</span></div>";
-      }
-    });
-  });
-  html += "</div>";
-
-  html += "<div class='btn-row' style='margin-top:16px'>";
-  html += "<button class='btn btn-primary' onclick='window.location.reload()'>&#8635; Nouveau tri</button>";
-  html += "</div>";
-
-  resultContent.innerHTML = html;
-  resultCard.scrollIntoView({ behavior: "smooth" });
-}
-
-// ── CLEAR ────────────────────────────────────────────────────────────────────
-document.getElementById("clearBtn").addEventListener("click", function() {
-  files = [];
-  parsedFiles = [];
-  document.getElementById("fileInput").value = "";
-  document.getElementById("statsCard").style.display = "none";
-  document.getElementById("resultCard").style.display = "none";
-  document.getElementById("clearBtn").disabled = true;
-  document.getElementById("logEl").innerHTML = "";
-  logMsg("Reinitialise", "warn");
+  logMsg("Termine: " + done + " deplaces, " + errors + " erreurs laisses dans A trier, " + skippedFiles.length + " non reconnus laisses", done > 0 ? "ok" : "err");
+  showResult(done, errors, leftInSource);
+  this.disabled = false;
 });
 
-// ── LOG ──────────────────────────────────────────────────────────────────────
+function showResult(done, errors, leftInSource) {
+  var card = document.getElementById("resultCard");
+  card.style.display = "block";
+
+  var html = "<div class='alert " + (errors === 0 ? "alert-ok" : "alert-warn") + "'>";
+  html += "&#10003; " + done + " fichiers deplaces vers <strong>" + destHandle.name + "/</strong>";
+  if (errors > 0) html += "<br>&#9888; " + errors + " fichiers laisses dans \"A trier\" (erreur de deplacement)";
+  if (skippedFiles.length > 0) html += "<br>&#9432; " + skippedFiles.length + " fichiers non reconnus laisses dans \"A trier\"";
+  html += "</div>";
+  html += "<div class='btn-row'><button class='btn btn-primary' onclick='window.location.reload()'>&#8635; Nouveau tri</button></div>";
+
+  document.getElementById("resultContent").innerHTML = html;
+  card.scrollIntoView({ behavior: "smooth" });
+}
+
+// ── CLEAR ─────────────────────────────────────────────────────────────────────
+document.getElementById("clearBtn").addEventListener("click", function() {
+  window.location.reload();
+});
+
+// ── LOG ───────────────────────────────────────────────────────────────────────
 function logMsg(msg, type) {
   type = type || "";
   var d = document.createElement("div");
   d.className = type;
   d.textContent = "[" + new Date().toLocaleTimeString("fr-FR") + "] " + msg;
-  var logEl = document.getElementById("logEl");
-  logEl.appendChild(d);
-  logEl.scrollTop = logEl.scrollHeight;
+  var el = document.getElementById("logEl");
+  el.appendChild(d);
+  el.scrollTop = el.scrollHeight;
 }
 
-logMsg("THOT Tri pret — selectionne tes fichiers SVG/PNG.", "info");
+logMsg("Selectionne le dossier A trier pour commencer.", "info");
 </script>
 </body>
 </html>

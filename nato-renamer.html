@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THOT — Renommage OTAN</title>
+<title>INSIGNUM — Collecte des insignes</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap');
   :root[data-theme="dark"]{--bg:#0a0c10;--surface:#0f1318;--surface2:#161b22;--border:#21262d;--border-active:#30363d;--accent:#58a6ff;--accent2:#3fb950;--warn:#d29922;--danger:#f85149;--text:#e6edf3;--text-muted:#7d8590;--text-dim:#484f58;}
@@ -13,10 +13,15 @@
   .app{display:grid;grid-template-rows:56px 1fr;grid-template-columns:300px 1fr;height:100vh;}
   header{grid-column:1/-1;display:flex;align-items:center;gap:16px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--border);}
   .logo{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;}
+  .logo em{color:var(--warn);font-style:normal;}
   .logo span{color:var(--text-muted);font-weight:300;font-size:13px;letter-spacing:2px;margin-left:8px;}
   .hstats{margin-left:auto;display:flex;gap:24px;align-items:center;}
   .stat{font-family:"Share Tech Mono",monospace;font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;}
   .stat strong{color:var(--accent);font-size:15px;}
+  .nav-pills{display:flex;gap:6px;}
+  .nav-btn{background:none;border:1px solid var(--border);border-radius:20px;padding:4px 14px;cursor:pointer;font-size:11px;font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .2s;text-transform:uppercase;}
+  .nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .nav-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
   .theme-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:16px;color:var(--text-muted);transition:all .2s;}
   .theme-btn:hover{border-color:var(--accent);color:var(--accent);}
   .nav-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 12px;cursor:pointer;font-size:12px;font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:1px;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s;text-transform:uppercase;}
@@ -93,12 +98,16 @@
 <body>
 <div class="app">
 <header>
-  <div class="logo">THOT <span>// OTAN IMAGE RENAMER</span></div>
+  <div class="logo">INSIGN<em>UM</em> <span>// collecte des insignes</span></div>
   <div class="hstats">
     <div class="stat">TROUVES <strong id="hT">0</strong></div>
     <div class="stat">TELECHARGES <strong id="hD">0</strong></div>
     <div class="stat">ERREURS <strong id="hE">0</strong></div>
-    <a class="nav-btn" href="https://fievreeclaircie.github.io/rename/thot-sorter.html" title="Outil de tri et organisation des fichiers">&#128230; Trier les fichiers</a>
+    <nav class="nav-pills" style="margin-left:auto;display:flex;gap:6px;">
+      <a class="nav-btn active" href="https://fievreeclaircie.github.io/rename/nato-renamer.html">&#127894; Collecte</a>
+      <a class="nav-btn" href="https://fievreeclaircie.github.io/rename/thot-sorter.html">&#128193; Tri</a>
+      <a class="nav-btn" href="https://fievreeclaircie.github.io/rename/thot-rename-ext.html">&#128444; Conversion</a>
+    </nav>
     <button class="theme-btn" id="themeBtn" title="Mode jour/nuit">&#9790;</button>
   </div>
 </header>
